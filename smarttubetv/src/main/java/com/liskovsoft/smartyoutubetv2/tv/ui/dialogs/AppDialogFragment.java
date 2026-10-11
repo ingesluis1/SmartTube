@@ -3,7 +3,11 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.dialogs;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.InsetDrawable;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.widget.FrameLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +49,10 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
     private boolean mIsOverlay;
     private boolean mIsPaused;
     private int mId;
+    // MOD (Inge): instellingen openen naast de lijst i.p.v. als apart zijpaneel
+    private static long sInlineRequestMs;
+    private static int sInlineLeftPx;
+    private boolean mInline;
 
     private static final String PREFERENCE_FRAGMENT_TAG =
             "androidx.leanback.preference.LeanbackSettingsFragment.PREFERENCE_FRAGMENT";
@@ -56,6 +64,80 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
         mPresenter = AppDialogPresenter.instance(getActivity());
         mPresenter.setView(this);
         mManager = new AppPreferenceManager(getActivity());
+
+        if (SystemClock.uptimeMillis() - sInlineRequestMs < 3_000) {
+            mInline = true;
+            sInlineRequestMs = 0;
+        }
+    }
+
+    /**
+     * MOD (Inge): het volgende dialoog dat opent komt naast de instellingenlijst (vanaf leftPx).
+     */
+    public static void requestInline(int leftPx) {
+        sInlineRequestMs = SystemClock.uptimeMillis();
+        sInlineLeftPx = leftPx;
+    }
+
+    public boolean isInline() {
+        return mInline;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (!mInline) {
+            return;
+        }
+
+        View container = view.findViewById(androidx.leanback.preference.R.id.settings_preference_fragment_container);
+        if (container == null) {
+            return;
+        }
+
+        int screenWidth = getResources().getDisplayMetrics().widthPixels;
+        int width = Math.max(screenWidth - sInlineLeftPx, screenWidth / 3);
+        ViewGroup.LayoutParams lp = container.getLayoutParams();
+        lp.width = width;
+        container.setLayoutParams(lp);
+        container.setElevation(0);
+        container.setBackgroundColor(0xFF0F0F0F);
+        if (container instanceof FrameLayout) {
+            // dunne scheidingslijn links, zoals de YouTube-app
+            ((FrameLayout) container).setForeground(new InsetDrawable(new ColorDrawable(0xFF303030), 0, getResources().getDimensionPixelSize(R.dimen.settings_list_top), width - dp(1), dp(40)));
+            ((FrameLayout) container).setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
+                @Override
+                public void onChildViewAdded(View parent, View child) {
+                    styleInline(child);
+                    child.post(() -> styleInline(child));
+                }
+
+                @Override
+                public void onChildViewRemoved(View parent, View child) {
+                }
+            });
+        }
+    }
+
+    private void styleInline(View child) {
+        child.setBackgroundColor(0x00000000);
+        child.setElevation(0);
+        View mainFrame = child.findViewById(androidx.leanback.preference.R.id.main_frame);
+        if (mainFrame != null) {
+            mainFrame.setBackgroundColor(0x00000000);
+            mainFrame.setElevation(0);
+        }
+        View titleContainer = child.findViewById(androidx.leanback.preference.R.id.decor_title_container);
+        if (titleContainer != null) {
+            titleContainer.setBackgroundColor(0x00000000);
+            titleContainer.setElevation(0);
+            titleContainer.setPadding(dp(16), Math.max(0, getResources().getDimensionPixelSize(R.dimen.settings_title_top) - dp(26)), 0, dp(14));
+        }
+    }
+
+    private int dp(int value) {
+        return Math.round(value * getResources().getDisplayMetrics().density);
     }
 
     @Override

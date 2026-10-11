@@ -1407,6 +1407,23 @@ public class BrowseSupportFragment extends BaseSupportFragment {
         }
     }
 
+    /**
+     * MOD (Inge): wil de getoonde pagina zelf de titelbalk tonen (los van het menu)?
+     */
+    public boolean contentWantsTitle() {
+        if (mIsPageRow && mMainFragmentAdapter != null) {
+            return mMainFragmentAdapter.mFragmentHost.mShowTitleView;
+        }
+        return isFirstRowWithContent(mSelectedPosition);
+    }
+
+    /**
+     * MOD (Inge): titelbalk opnieuw laten bepalen.
+     */
+    public void refreshTitleVisibility() {
+        updateTitleViewVisibility();
+    }
+
     boolean isFirstRowWithContentOrPageRow(int rowPosition) {
         if (mAdapter == null || mAdapter.size() == 0) {
             return true;

@@ -70,6 +70,14 @@ public class AppDialogActivity extends MotherActivity {
             return false;
         }
 
+        // MOD (Inge): naast de instellingenlijst: links = een niveau terug, rechts doet niets
+        if (mFragment.isInline() && KeyHelpers.isLeftRightKey(event.getKeyCode())) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT) {
+                mFragment.goBack();
+            }
+            return true;
+        }
+
         // Toggle dialog
         if (!mFragment.isOverlay() && (KeyHelpers.isLeftRightKey(event.getKeyCode()) || KeyHelpers.isMenuKey(event.getKeyCode()))) {
             if (event.getAction() == KeyEvent.ACTION_DOWN) {

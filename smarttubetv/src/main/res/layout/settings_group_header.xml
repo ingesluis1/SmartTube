@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MOD (Inge): grijs groepskopje in de instellingenlijst -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/settings_group_title"
+    android:layout_width="@dimen/settings_row_width"
+    android:layout_height="wrap_content"
+    android:focusable="false"
+    android:paddingStart="14dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="6dp"
+    android:textAllCaps="true"
+    android:letterSpacing="0.04"
+    android:fontFamily="sans-serif-medium"
+    android:textSize="13sp"
+    android:textColor="#FFAAAAAA" />

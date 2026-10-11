@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MOD (Inge): keuzeregel: tekst links, vinkje rechts, afgeronde balk -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/pref_item_bg"
+    android:clickable="true"
+    android:focusable="true"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:minHeight="52dp"
+    android:paddingStart="30dp"
+    android:paddingEnd="28dp"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp">
+
+    <TextView
+        android:id="@android:id/title"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:duplicateParentState="true"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/pref_item_text"
+        android:textSize="17sp" />
+
+    <RadioButton
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:focusable="false"
+        android:clickable="false"
+        android:background="@null"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:button="@drawable/pref_check_single" />
+</LinearLayout>

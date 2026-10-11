@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MOD (Inge): instellingen als lijst zoals de YouTube-app: klein icoon, label, wit vlak bij focus -->
+<androidx.leanback.widget.NonOverlappingLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/settings_row_width"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="@drawable/nav_item_bg"
+    android:paddingStart="14dp"
+    android:paddingEnd="18dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
+    <ImageView
+        android:id="@+id/settings_row_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:duplicateParentState="true"
+        android:importantForAccessibility="no" />
+
+    <TextView
+        android:id="@+id/settings_row_title"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:duplicateParentState="true"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
+        android:textSize="17sp"
+        android:textColor="@color/nav_item_text" />
+</androidx.leanback.widget.NonOverlappingLinearLayout>

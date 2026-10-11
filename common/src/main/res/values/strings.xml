@@ -765,4 +765,25 @@
         <item quantity="one">%s second</item>
         <item quantity="other">%s seconds</item>
     </plurals>
+    <!-- MOD (Inge): instellingenpagina in YouTube-stijl -->
+    <string name="settings_page_title">Settings</string>
+    <string name="settings_group_account">Account &amp; devices</string>
+    <string name="settings_group_app">App</string>
+    <string name="settings_group_playback">Playback</string>
+    <string name="settings_group_addons">Add-ons</string>
+    <string name="settings_group_more">More</string>
+    <string name="settings_desc_accounts">Sign in, switch between accounts or add a new one.</string>
+    <string name="settings_desc_remote">Control playback from your phone with the YouTube app or a link code.</string>
+    <string name="settings_desc_language">Choose the app language and the country used for recommendations.</string>
+    <string name="settings_desc_general">Menu sections, startup screen, screensaver and other app behaviour.</string>
+    <string name="settings_desc_ui">Tile size, colour scheme, fonts and animations.</string>
+    <string name="settings_desc_player">Playback mode, video quality, speed, buttons and audio.</string>
+    <string name="settings_desc_afr">Match the refresh rate of the TV to the video for smoother motion.</string>
+    <string name="settings_desc_subtitles">Subtitle language, size, colour and position.</string>
+    <string name="settings_desc_search">Search history, suggestions and voice search.</string>
+    <string name="settings_desc_sponsorblock">Automatically skip sponsor segments, intros and reminders.</string>
+    <string name="settings_desc_dearrow">Replace clickbait titles and thumbnails with community versions.</string>
+    <string name="settings_desc_backup">Save your settings and history, or restore them on another device.</string>
+    <string name="settings_desc_about">Version, updates and information about the app.</string>
+    <string name="settings_open_hint">Press OK to open</string>
 </resources>

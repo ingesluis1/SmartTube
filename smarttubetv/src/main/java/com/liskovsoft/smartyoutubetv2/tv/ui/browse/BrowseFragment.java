@@ -170,12 +170,20 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
             @Override
             public void onHeadersTransitionStart(boolean withHeaders) {
                 mNavStrip.setVisibility(withHeaders ? View.INVISIBLE : View.VISIBLE);
+                onHeadersTransition(true); // MOD (Inge)
             }
 
             @Override
             public void onHeadersTransitionStop(boolean withHeaders) {
                 mNavStrip.setVisibility(withHeaders ? View.INVISIBLE : View.VISIBLE);
+                onHeadersTransition(false); // MOD (Inge)
             }
+        });
+
+        // MOD (Inge): bovenbalk volgt het tegelvlak elke frame
+        root.getViewTreeObserver().addOnPreDrawListener(() -> {
+            syncTitle();
+            return true;
         });
 
         ((ExtendedHeadersSupportFragment) getHeadersSupportFragment()).setExtraOnHeaderViewSelectedListener(
@@ -186,6 +194,87 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
                 });
 
         updateNavStrip();
+    }
+
+    // MOD (Inge): bovenbalk (profiel, microfoon, zoeken) schuift synchroon mee met de tegels als het menu opent
+    // en blijft dan zichtbaar (behalve op de instellingenpagina, daar staat de titel "Settings").
+    private boolean mInHeadersTransition;
+    private int mDockBaseline = -1;
+    private android.graphics.drawable.GradientDrawable mTitleFade;
+
+    @Override
+    public void showTitle(boolean show) {
+        super.showTitle(show || forceTitle());
+    }
+
+    @Override
+    public void showTitle(int flags) {
+        // Leanback toont bij open menu alleen op de eerste sectie de zoekknoppen; wij altijd
+        super.showTitle(forceTitle() ? androidx.leanback.widget.TitleViewAdapter.FULL_VIEW_VISIBLE : flags);
+    }
+
+    private boolean isSettingsShown() {
+        return getMainFragment() instanceof com.liskovsoft.smartyoutubetv2.tv.ui.browse.settings.SettingsGridFragment;
+    }
+
+    private boolean forceTitle() {
+        return isShowingHeaders() && !isSettingsShown();
+    }
+
+    private void onHeadersTransition(boolean start) {
+        mInHeadersTransition = start;
+        refreshTitleVisibility();
+        syncTitle();
+    }
+
+    /**
+     * Elke frame: zet de balk op dezelfde verschuiving als het tegelvlak (synchroon met de animatie van Leanback).
+     */
+    private void syncTitle() {
+        View root = getView();
+        View title = getTitleView();
+        if (root == null || title == null) {
+            return;
+        }
+        View dock = root.findViewById(R.id.scale_frame); // Leanback verschuift dit vlak (marge) als het menu opent
+        View orb = title.findViewById(R.id.account_orb);
+        if (dock == null || orb == null) {
+            return;
+        }
+
+        int[] loc = new int[2];
+        dock.getLocationOnScreen(loc);
+        int dockX = loc[0];
+        if (!isShowingHeaders() && !mInHeadersTransition) {
+            mDockBaseline = dockX;
+        }
+        int baseline = Math.max(mDockBaseline, 0);
+        int headersWidth = getResources().getDimensionPixelSize(R.dimen.lb_browse_headers_width);
+        float fraction = Math.max(0f, Math.min(1f, (dockX - baseline) / (float) headersWidth));
+
+        orb.getLocationOnScreen(loc);
+        float orbLeft = loc[0] - title.getTranslationX(); // positie zonder verschuiving
+        float fullShift = headersWidth + getResources().getDimensionPixelSize(R.dimen.nav_strip_width) - orbLeft;
+        float target = fraction * fullShift;
+        if (Math.abs(title.getTranslationX() - target) > 0.5f) {
+            title.setTranslationX(target);
+        }
+
+        // Pagina staat al omlaag: donkere achtergrond die naar onder vervaagt, zodat de balk niet over de tegels valt
+        boolean fade = fraction > 0.01f && !isSettingsShown() && !contentWantsTitle();
+        if (fade) {
+            if (mTitleFade == null) {
+                mTitleFade = new android.graphics.drawable.GradientDrawable(
+                        android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM,
+                        new int[] {0xFF0F0F0F, 0xFF0F0F0F, 0x000F0F0F});
+            }
+            mTitleFade.setAlpha(Math.round(255 * fraction));
+            if (title.getBackground() != mTitleFade) {
+                title.setBackground(mTitleFade);
+            }
+        } else if (title.getBackground() != null) {
+            title.setBackground(null);
+        }
     }
 
     private void updateNavStrip() {

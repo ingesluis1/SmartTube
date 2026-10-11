@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- MOD (Inge): menu-item krijgt bij focus een wit afgerond vlak, zoals de YouTube-app -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- MOD (Inge): focus staat in een paneel ernaast: grijs vlak, zoals de YouTube-app -->
+    <item android:state_focused="true" android:state_window_focused="false">
+        <shape android:shape="rectangle">
+            <corners android:radius="8dp" />
+            <solid android:color="#FF303030" />
+        </shape>
+    </item>
     <item android:state_focused="true">
         <shape android:shape="rectangle">
             <corners android:radius="8dp" />

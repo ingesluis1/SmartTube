@@ -168,4 +168,8 @@
     <dimen name="tooltip_vertical_padding_mod">6.5dp</dimen>
     <dimen name="tooltip_y_offset_non_touch_mod">0dp</dimen>
     <dimen name="tooltip_y_offset_touch_mod">16dp</dimen>
+    <!-- MOD (Inge): instellingenpagina -->
+    <dimen name="settings_row_width">290dp</dimen>
+    <dimen name="settings_list_top">104dp</dimen>
+    <dimen name="settings_title_top">40dp</dimen>
 </resources>

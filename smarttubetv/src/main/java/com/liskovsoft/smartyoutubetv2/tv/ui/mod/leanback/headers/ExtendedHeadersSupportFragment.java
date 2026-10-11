@@ -7,6 +7,7 @@ import androidx.leanback.app.HeadersSupportFragment;
 import androidx.leanback.widget.ItemBridgeAdapter;
 import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowHeaderPresenter;
+import androidx.leanback.widget.VerticalGridView;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 
@@ -41,6 +42,28 @@ public class ExtendedHeadersSupportFragment extends HeadersSupportFragment {
                 mExtraSelectedListener.onHeaderSelected(viewHolder, row);
             }
         });
+    }
+
+    /**
+     * MOD (Inge): menu stopt met scrollen zodra het laatste item (Settings) in beeld is, geen lege ruimte eronder.
+     */
+    @Override
+    public void onViewCreated(View view, android.os.Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        stopAtEdges();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        stopAtEdges();
+    }
+
+    private void stopAtEdges() {
+        VerticalGridView grid = getVerticalGridView();
+        if (grid != null) {
+            grid.setWindowAlignment(VerticalGridView.WINDOW_ALIGN_HIGH_EDGE);
+        }
     }
 
     public ExtendedHeadersSupportFragment() {
