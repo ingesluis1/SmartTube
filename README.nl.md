@@ -12,6 +12,16 @@ Deze build lijkt meer op de officiële YouTube-app voor tv:
 - snellere start (beveiligingstoken wordt bewaard en vooraf aangemaakt)
 - updates via de [releases](https://github.com/ingesluis1/SmartTube/releases) van deze repository
 
+## Schermafbeeldingen
+
+| | |
+|---|---|
+| ![Overzicht met tegels](docs/images/home.jpg)<br>Overzicht met tegels | ![Menu](docs/images/menu.jpg)<br>Menu |
+| ![Spelerbalk](docs/images/player.jpg)<br>Spelerbalk | ![Kanaalpaneel in de speler](docs/images/channel.jpg)<br>Kanaalpaneel in de speler |
+| ![Reacties](docs/images/comments.jpg)<br>Reacties | ![Zoekscherm](docs/images/search.jpg)<br>Zoekscherm |
+
+<img src="docs/images/profiles.jpg" alt="Wie kijkt er? (voorbeeldprofiel)" width="49%"><br>Wie kijkt er? (voorbeeldprofiel)
+
 Alle wijzigingen zijn in de code gemarkeerd met `MOD (Inge)`.
 
 **Installeren:** download de nieuwste apk onder Releases (`armeabi-v7a` voor de meeste tv's) en installeer die met de app Downloader.

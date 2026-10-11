@@ -12,6 +12,16 @@ This build looks more like the official YouTube app for TV:
 - faster startup (the security token is stored and created ahead of time)
 - updates through the [releases](https://github.com/ingesluis1/SmartTube/releases) of this repository
 
+## Screenshots
+
+| | |
+|---|---|
+| ![Home with tiles](docs/images/home.jpg)<br>Home with tiles | ![Menu](docs/images/menu.jpg)<br>Menu |
+| ![Player bar](docs/images/player.jpg)<br>Player bar | ![Channel panel in the player](docs/images/channel.jpg)<br>Channel panel in the player |
+| ![Comments](docs/images/comments.jpg)<br>Comments | ![Search screen](docs/images/search.jpg)<br>Search screen |
+
+<img src="docs/images/profiles.jpg" alt="Who's watching? (example profile)" width="49%"><br>Who's watching? (example profile)
+
 All changes are marked in the code with `MOD (Inge)`.
 
 **Install:** download the latest apk under Releases (`armeabi-v7a` for most TVs) and install it with the Downloader app.
