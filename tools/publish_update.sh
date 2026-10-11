@@ -8,18 +8,18 @@
 #   1. versionCode +1 (en versionName laatste cijfer +1) in smarttubetv/build.gradle
 #   2. release bouwen (ondertekend met de eigen sleutel)
 #   3. apk's + stable.json klaarzetten in build/update-site/smarttube/
-#   4. publiceren als GitHub Release in ingesluis1/SmartTube-Inge (gh CLI)
+#   4. publiceren als GitHub Release in ingesluis1/SmartTube (gh CLI)
 #   5. deelmap Downloads/SmartTube_Inge bijwerken
 #
 # De app kijkt bij elke start naar:
-#   https://github.com/ingesluis1/SmartTube-Inge/releases/latest/download/stable.json
+#   https://github.com/ingesluis1/SmartTube/releases/latest/download/stable.json
 #
 # Opties via omgevingsvariabelen:
 #   NO_BUMP=1        versienummer niet ophogen
 #   NO_UPLOAD=1      alleen lokaal klaarzetten, niet publiceren
 #   NO_SHARE=1       deelmap Downloads/SmartTube_Inge niet bijwerken
 #   BASE_URL=...     downloadadres in stable.json (standaard de GitHub Release van deze versie)
-#   REPO=...         GitHub-repository (standaard ingesluis1/SmartTube-Inge)
+#   REPO=...         GitHub-repository (standaard ingesluis1/SmartTube)
 set -e
 cd "$(dirname "$0")/.."
 
@@ -29,7 +29,7 @@ if [ $# -lt 1 ]; then
 fi
 
 GRADLE=smarttubetv/build.gradle
-REPO="${REPO:-ingesluis1/SmartTube-Inge}"
+REPO="${REPO:-ingesluis1/SmartTube}"
 
 if [ -z "$NO_BUMP" ]; then
     python -I - "$GRADLE" <<'EOF'

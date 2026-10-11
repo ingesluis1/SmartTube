@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- MOD (Inge): updates via GitHub Releases van ingesluis1/SmartTube-Inge (altijd bereikbaar, ook als de server thuis uit staat) -->
+    <!-- MOD (Inge): updates via GitHub Releases van ingesluis1/SmartTube (altijd bereikbaar, ook als de server thuis uit staat) -->
     <string-array name="update_urls">
-        <item>https://github.com/ingesluis1/SmartTube-Inge/releases/latest/download/stable.json</item>
+        <item>https://github.com/ingesluis1/SmartTube/releases/latest/download/stable.json</item>
     </string-array>
 </resources>
