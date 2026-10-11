@@ -31,6 +31,7 @@
             android:gravity="top|center_horizontal"
             android:paddingTop="@dimen/nav_strip_padding_top"
             android:paddingBottom="24dp"
+            android:background="?attr/shelfBackground"
             android:focusable="false"
             android:importantForAccessibility="no" />
         <!-- Padding needed for shadow -->
