@@ -1,28 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- MOD (Inge): menu-item zoals de YouTube-app: klein icoon, medium tekst, wit vlak bij focus -->
 <androidx.leanback.widget.NonOverlappingLinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:layout_width="@dimen/nav_item_width"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/nav_item_bg"
+    android:paddingStart="14dp"
+    android:paddingEnd="18dp"
+    android:paddingTop="9dp"
+    android:paddingBottom="9dp">
 
     <ImageView
         android:id="@+id/header_icon"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:duplicateParentState="true"
         android:contentDescription="@string/header_icon" />
 
     <com.liskovsoft.smartyoutubetv2.tv.ui.widgets.marqueetextviewcompat.HeaderMarqueeTextViewCompat
         android:id="@+id/header_label"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="18dp"
+        android:duplicateParentState="true"
 
         android:singleLine="true"
-        android:maxWidth="150sp"
         android:marqueeRepeatLimit="marquee_forever"
         android:ellipsize="marquee"
         android:scrollHorizontally="true"
 
-        style="@style/TextAppearance.Leanback.Header"/>
+        android:fontFamily="sans-serif-medium"
+        android:textSize="17sp"
+        android:textColor="@color/nav_item_text" />
 </androidx.leanback.widget.NonOverlappingLinearLayout>

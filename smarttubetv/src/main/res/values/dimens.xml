@@ -60,6 +60,15 @@
     <!-- Increase player time text size -->
     <dimen name="lb_playback_controls_time_text_size">16sp</dimen>
 
+    <!-- MOD (Inge): navigatiestrook links; inhoud en bovenbalk beginnen rechts ervan -->
+    <dimen name="nav_strip_width">72dp</dimen>
+    <dimen name="nav_item_width">230dp</dimen>
+    <dimen name="nav_strip_padding_top">104dp</dimen>
+    <dimen name="nav_content_padding_start">78dp</dimen>
+
+    <!-- MOD (Inge): menu-item niet vergroten bij selectie (YouTube doet dat niet) -->
+    <item format="float" name="lb_browse_header_select_scale" type="dimen">1.0</item>
+
     <!-- MOD (Inge): rijkoppen niet dimmen (Leanback: 50%) -->
     <item name="lb_browse_header_unselect_alpha" type="fraction">100%</item>
 
@@ -111,7 +120,7 @@
 
     <!-- Browse headers spacing. Origin: 21dp -->
     <!--<dimen name="lb_browse_headers_vertical_spacing">10dp</dimen>-->
-    <dimen name="browse_headers_vertical_spacing">10dp</dimen>
+    <dimen name="browse_headers_vertical_spacing">2dp</dimen>
 
     <!-- Vine card widget values -->
     <dimen name="lb_basic_card_main_width">140dp</dimen>

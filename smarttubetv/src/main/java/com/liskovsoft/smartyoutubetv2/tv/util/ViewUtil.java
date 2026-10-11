@@ -32,8 +32,8 @@ public class ViewUtil {
     /**
      * Focused card zoom factor
      */
-    public static final int FOCUS_ZOOM_FACTOR = FocusHighlight.ZOOM_FACTOR_SMALL;
-    //public static final int FOCUS_ZOOM_FACTOR = FocusHighlight.ZOOM_FACTOR_NONE;
+    //public static final int FOCUS_ZOOM_FACTOR = FocusHighlight.ZOOM_FACTOR_SMALL;
+    public static final int FOCUS_ZOOM_FACTOR = FocusHighlight.ZOOM_FACTOR_NONE; // MOD (Inge): witte rand volstaat, geen vergroting
     /**
      * Dim focused card?
      */

@@ -45,7 +45,7 @@ public class IconHeaderItemPresenter extends RowHeaderPresenter {
         mDefaultIcon = new ColorDrawable(ContextCompat.getColor(viewGroup.getContext(), R.color.lb_grey));
 
         View view = inflater.inflate(R.layout.icon_header_item, null);
-        view.setAlpha(mUnselectedAlpha); // Initialize icons to be at half-opacity.
+        view.setAlpha(1f); // MOD (Inge): niet dimmen; het witte focusvlak geeft de selectie aan
 
         return new ViewHolder(view);
     }
@@ -76,6 +76,10 @@ public class IconHeaderItemPresenter extends RowHeaderPresenter {
             } else {
                 Drawable icon = mResId > 0 ? ContextCompat.getDrawable(rootView.getContext(), mResId) : mDefaultIcon;
                 iconView.setImageDrawable(icon);
+                // MOD (Inge): icoon kleurt mee met de tekst (zwart op het witte focusvlak)
+                if (android.os.Build.VERSION.SDK_INT >= 21) {
+                    iconView.setImageTintList(ContextCompat.getColorStateList(rootView.getContext(), R.color.nav_item_text));
+                }
             }
         }
 
@@ -94,8 +98,7 @@ public class IconHeaderItemPresenter extends RowHeaderPresenter {
     // mUnselectAlpha, and also assumes the xml inflation will return a RowHeaderView.
     @Override
     protected void onSelectLevelChanged(RowHeaderPresenter.ViewHolder holder) {
-        holder.view.setAlpha(mUnselectedAlpha + holder.getSelectLevel() *
-                (1.0f - mUnselectedAlpha));
+        holder.view.setAlpha(1f); // MOD (Inge)
     }
 
     private final RequestListener<Drawable> mErrorListener = new RequestListener<Drawable>() {

@@ -33,6 +33,7 @@ import com.liskovsoft.smartyoutubetv2.common.prefs.common.DataChangeBase.OnDataC
 import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
+import com.liskovsoft.smartyoutubetv2.common.app.presenters.SearchPresenter;
 import com.liskovsoft.smartyoutubetv2.tv.R;
 import com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.playerglue.tooltips.TooltipCompatHandler;
 import com.liskovsoft.smartyoutubetv2.tv.ui.widgets.search.LongClickSearchOrbView;
@@ -58,6 +59,7 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
     private TextView mPipTitle;
     private int mSearchVisibility = View.INVISIBLE;
     private int mBrandingVisibility = View.INVISIBLE;
+    private TextView mSearchPill; // MOD (Inge)
     private DateTimeView mGlobalClock;
     private DateTimeView mGlobalDate;
     private SearchOrbView mSearchOrbView;
@@ -150,6 +152,9 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
 
         if (mIsSearchOrbEnabled) {
             mSearchOrbView.setVisibility(View.GONE);
+            mSearchPill.setVisibility(View.GONE); // MOD (Inge)
+        } else {
+            mSearchPill.setVisibility(mSearchOrbView.getVisibility()); // MOD (Inge): zoekbalk volgt de zoekknop
         }
 
         if (mIsAccountViewEnabled) {
@@ -194,6 +199,10 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
 
         mSearchOrbView = findViewById(R.id.title_orb);
 
+        // MOD (Inge): brede zoekbalk naast de zoekknop
+        mSearchPill = findViewById(R.id.search_pill);
+        mSearchPill.setOnClickListener(v -> SearchPresenter.instance(getContext()).startSearch(null));
+
         mAccountView = findViewById(R.id.account_orb);
         mAccountView.setOnOrbClickedListener(v -> AccountSelectionPresenter.instance(getContext()).nextAccountOrDialog());
         mAccountView.setOnOrbLongClickedListener(v -> {
@@ -232,6 +241,7 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
         mIsGlobalClockEnabled = GeneralData.instance(getContext()).isGlobalClockEnabled();
 
         mSearchOrbView.setVisibility(mIsSearchOrbEnabled ? View.VISIBLE : View.GONE);
+        mSearchPill.setVisibility(mSearchOrbView.getVisibility()); // MOD (Inge): zoekbalk volgt de zoekknop
         mAccountView.setVisibility(mIsAccountViewEnabled ? View.VISIBLE : View.GONE);
         mLanguageView.setVisibility(mIsLanguageViewEnabled ? View.VISIBLE : View.GONE);
         mGlobalClock.setVisibility(mIsGlobalClockEnabled ? View.VISIBLE : View.GONE);

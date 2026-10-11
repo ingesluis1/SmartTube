@@ -616,7 +616,7 @@ public class GeneralData implements ProfileChangeListener {
         mPlaylistOrder = Helpers.parseMap(split, 29, Helpers::parseStr, Helpers::parseInt);
         //String pendingStreams = Helpers.parseStr(split, 30);
         mPendingStreams = Helpers.parseList(split, 30, Video::fromString);
-        mIsGlobalClockEnabled = Helpers.parseBoolean(split, 31, true);
+        mIsGlobalClockEnabled = Helpers.parseBoolean(split, 31, false); // MOD (Inge): YouTube toont geen klok
         //mTimeFormat = Helpers.parseInt(split, 32, -1);
         mSettingsPassword = Helpers.parseStr(split, 33);
         mIsChildModeEnabled = Helpers.parseBoolean(split, 34, false);

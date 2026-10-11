@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MOD (Inge): kopie van de Leanback-layout met een navigatiestrook links (YouTube-stijl) -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/browse_dummy"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <androidx.leanback.widget.BrowseFrameLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:descendantFocusability="afterDescendants"
+        android:id="@+id/browse_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.leanback.widget.BrowseRowsFrameLayout
+            android:id="@+id/browse_container_dock"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.leanback.widget.ScaleFrameLayout
+                android:id="@+id/scale_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </androidx.leanback.widget.BrowseRowsFrameLayout>
+
+        <com.liskovsoft.smartyoutubetv2.tv.ui.widgets.browse.NavStripView
+            android:id="@+id/nav_strip"
+            android:layout_width="@dimen/nav_strip_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:orientation="vertical"
+            android:gravity="top|center_horizontal"
+            android:paddingTop="@dimen/nav_strip_padding_top"
+            android:paddingBottom="24dp"
+            android:focusable="false"
+            android:importantForAccessibility="no" />
+        <!-- Padding needed for shadow -->
+        <FrameLayout
+            android:id="@+id/browse_headers_dock"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingEnd="50dp" />
+    </androidx.leanback.widget.BrowseFrameLayout>
+</FrameLayout>

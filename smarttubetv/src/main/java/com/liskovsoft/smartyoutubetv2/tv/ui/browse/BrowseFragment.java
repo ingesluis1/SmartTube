@@ -31,6 +31,9 @@ import com.liskovsoft.smartyoutubetv2.common.app.presenters.BrowsePresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.SearchPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.SplashPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.views.BrowseView;
+import com.liskovsoft.smartyoutubetv2.tv.ui.widgets.browse.NavStripView;
+import java.util.ArrayList;
+import java.util.List;
 import com.liskovsoft.smartyoutubetv2.common.misc.CrashRestorer;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 import com.liskovsoft.smartyoutubetv2.tv.R;
@@ -56,6 +59,7 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
     private boolean mIsFragmentCreated;
     private boolean mFocusOnContent;
     private CrashRestorer mCrashRestorer;
+    private NavStripView mNavStrip; // MOD (Inge)
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,6 +109,8 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
 
         setupEventListeners();
 
+        setupNavStrip(); // MOD (Inge)
+
         prepareEntranceTransition();
 
         mBrowsePresenter.onViewInitialized();
@@ -148,6 +154,57 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
         );
 
         setOnSearchClickedListener(view -> SearchPresenter.instance(getContext()).startSearch(null));
+    }
+
+    // MOD (Inge): navigatiestrook links (iconen van de secties), zoals de YouTube-app
+    private void setupNavStrip() {
+        View root = getView();
+        mNavStrip = root != null ? root.findViewById(R.id.nav_strip) : null;
+        if (mNavStrip == null) {
+            return;
+        }
+
+        mNavStrip.setVisibility(isShowingHeaders() ? View.INVISIBLE : View.VISIBLE);
+
+        setBrowseTransitionListener(new BrowseTransitionListener() {
+            @Override
+            public void onHeadersTransitionStart(boolean withHeaders) {
+                mNavStrip.setVisibility(withHeaders ? View.INVISIBLE : View.VISIBLE);
+            }
+
+            @Override
+            public void onHeadersTransitionStop(boolean withHeaders) {
+                mNavStrip.setVisibility(withHeaders ? View.INVISIBLE : View.VISIBLE);
+            }
+        });
+
+        ((ExtendedHeadersSupportFragment) getHeadersSupportFragment()).setExtraOnHeaderViewSelectedListener(
+                (viewHolder, row) -> {
+                    if (row != null && row.getHeaderItem() != null) {
+                        mNavStrip.setSelectedId(row.getHeaderItem().getId());
+                    }
+                });
+
+        updateNavStrip();
+    }
+
+    private void updateNavStrip() {
+        if (mNavStrip == null || mSectionRowAdapter == null) {
+            return;
+        }
+
+        List<NavStripView.Item> items = new ArrayList<>();
+        for (Object row : mSectionRowAdapter.unmodifiableList()) {
+            if (row instanceof PageRow && ((PageRow) row).getHeaderItem() instanceof SectionHeaderItem) {
+                SectionHeaderItem header = (SectionHeaderItem) ((PageRow) row).getHeaderItem();
+                items.add(new NavStripView.Item(header.getId(), header.getResId(), header.getIconUrl()));
+            }
+        }
+        mNavStrip.setItems(items);
+        int position = getSelectedPosition();
+        if (position >= 0 && position < mSectionRowAdapter.size()) {
+            mNavStrip.setSelectedId(((PageRow) mSectionRowAdapter.get(position)).getHeaderItem().getId());
+        }
     }
 
     private void setupFragmentFactory() {
@@ -200,7 +257,7 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
         setBrandColor(ContextCompat.getColor(getContext(), brandColorRes));
 
         // Set search icon color.
-        setSearchAffordanceColor(ContextCompat.getColor(getContext(), brandAccentColorRes));
+        setSearchAffordanceColor(ContextCompat.getColor(getContext(), R.color.top_button_bg)); // MOD (Inge): grijs zoals YouTube
 
         setHeaderPresenterSelector(new PresenterSelector() {
             private final Map<Integer, Presenter> mPresenterMap = new HashMap<>();
@@ -304,6 +361,7 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
     public void removeAllSections() {
         mSections.clear();
         mSectionRowAdapter.clear();
+        updateNavStrip(); // MOD (Inge)
     }
 
     @Override
@@ -417,6 +475,7 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
         } else {
             mSectionRowAdapter.add(index, pageRow);
         }
+        updateNavStrip(); // MOD (Inge)
     }
 
     private void removeHeader(BrowseSection header) {
@@ -431,6 +490,7 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
 
         if (foundHeader != null) {
             mSectionRowAdapter.remove(foundHeader);
+            updateNavStrip(); // MOD (Inge)
         }
     }
 
@@ -524,6 +584,7 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
         Drawable bridgeIcon = Utils.getDrawable(getContext(), splashPresenter.getBridgePackageName(), "app_icon");
 
         // Top right corner logo
-        setBadgeDrawable(bridgeIcon != null ? bridgeIcon : appLogoRes > 0 ? ContextCompat.getDrawable(getContext(), appLogoRes) : null);
+        // MOD (Inge): geen logo rechtsboven, zoals de YouTube-app zonder Premium-badge
+        setBadgeDrawable(null);
     }
 }

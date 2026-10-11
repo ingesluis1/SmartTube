@@ -27,23 +27,14 @@
                   android:layout_height="wrap_content"
                   android:orientation="horizontal"
                   android:layout_gravity="center_vertical|start">
-        <androidx.leanback.widget.SearchOrbView
-            android:id="@+id/title_orb"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:transitionGroup="true"
-            android:layout_gravity="center_vertical|start"
-            android:nextFocusRight="@id/account_orb"
-            android:visibility="invisible" />
-
+        <!-- MOD (Inge): volgorde zoals YouTube: avatar, zoekknop, zoekbalk -->
         <com.liskovsoft.smartyoutubetv2.tv.ui.widgets.search.LongClickSearchOrbView
             android:id="@+id/account_orb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:transitionGroup="true"
-            android:layout_marginStart="@dimen/search_bar_right_items_margin"
-            android:nextFocusLeft="@id/title_orb"
-            android:nextFocusRight="@id/language_orb"
+            android:layout_gravity="center_vertical"
+            android:nextFocusRight="@id/title_orb"
             app:searchOrbIcon="@drawable/browse_title_account"
             app:searchOrbColor="@color/orb_color"
             app:searchOrbBrightColor="@color/orb_bright_color"
@@ -51,12 +42,45 @@
             android:visibility="gone" />
 
         <androidx.leanback.widget.SearchOrbView
+            android:id="@+id/title_orb"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:transitionGroup="true"
+            android:layout_gravity="center_vertical|start"
+            android:layout_marginStart="@dimen/search_bar_right_items_margin"
+            android:nextFocusLeft="@id/account_orb"
+            android:nextFocusRight="@id/search_pill"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/search_pill"
+            android:layout_width="300dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/search_pill_bg"
+            android:gravity="center_vertical"
+            android:paddingStart="22dp"
+            android:paddingEnd="22dp"
+            android:text="@string/action_search"
+            android:textColor="@color/search_pill_text"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:nextFocusLeft="@id/title_orb"
+            android:nextFocusRight="@id/language_orb"
+            android:visibility="gone" />
+
+        <!-- (oude account_orb verplaatst naar boven) -->
+
+        <androidx.leanback.widget.SearchOrbView
             android:id="@+id/language_orb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:transitionGroup="true"
             android:layout_marginStart="@dimen/search_bar_right_items_margin"
-            android:nextFocusLeft="@id/account_orb"
+            android:nextFocusLeft="@id/search_pill"
             android:nextFocusRight="@id/exit_pip"
             app:searchOrbIcon="@drawable/search_bar_language_orb"
             app:searchOrbColor="@color/orb_color"

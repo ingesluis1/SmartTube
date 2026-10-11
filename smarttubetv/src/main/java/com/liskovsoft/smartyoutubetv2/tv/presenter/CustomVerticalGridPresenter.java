@@ -19,6 +19,7 @@ public class CustomVerticalGridPresenter extends VerticalGridPresenter {
 
         mLayoutResId = layoutResId;
         mRootResId = rootResId;
+        setShadowEnabled(false); // MOD (Inge): geen schaduw onder de geselecteerde tegel
     }
 
     /**

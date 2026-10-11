@@ -22,6 +22,26 @@ public class ExtendedHeadersSupportFragment extends HeadersSupportFragment {
     }
 
     private OnHeaderLongPressedListener mOnHeaderLongPressedListener;
+    private OnHeaderViewSelectedListener mExtraSelectedListener;
+
+    /**
+     * MOD (Inge): tweede luisteraar voor sectieselectie (voor de navigatiestrook), naast die van Leanback zelf.
+     */
+    public void setExtraOnHeaderViewSelectedListener(OnHeaderViewSelectedListener listener) {
+        mExtraSelectedListener = listener;
+    }
+
+    @Override
+    public void setOnHeaderViewSelectedListener(OnHeaderViewSelectedListener listener) {
+        super.setOnHeaderViewSelectedListener((viewHolder, row) -> {
+            if (listener != null) {
+                listener.onHeaderSelected(viewHolder, row);
+            }
+            if (mExtraSelectedListener != null) {
+                mExtraSelectedListener.onHeaderSelected(viewHolder, row);
+            }
+        });
+    }
 
     public ExtendedHeadersSupportFragment() {
         Helpers.setField(this, "mAdapterListener", mCustomAdapterListener);
