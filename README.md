@@ -1,21 +1,23 @@
 # SmartTube (Inge's build)
 
-Aangepaste versie van [SmartTube](https://github.com/yuliskov/SmartTube) door yuliskov, onder dezelfde MIT-licentie.
-Deze build lijkt meer op de officiële YouTube-app voor tv:
+**English** | [Nederlands](README.nl.md)
 
-- opgeruimde tegels zonder zoom bij focus, navigatiestrook en menu in YouTube-stijl
-- eenvoudigere spelerbalk, kanaalpaneel in de speler, overzichtelijke reacties
-- "Wie kijkt er?"-profielkiezer met achtergrondkleur uit de profielfoto
-- zoekscherm met letterraster en zoekgeschiedenis zoals de YouTube-app
-- snellere start (beveiligingstoken wordt bewaard en vooraf aangemaakt)
-- updates via de [releases](https://github.com/ingesluis1/SmartTube/releases) van deze repository
+A modified version of [SmartTube](https://github.com/yuliskov/SmartTube) by yuliskov, under the same MIT license.
+This build looks more like the official YouTube app for TV:
 
-Alle wijzigingen zijn in de code gemarkeerd met `MOD (Inge)`.
+- cleaner tiles without zoom on focus, navigation strip and menu in YouTube style
+- simpler player bar, channel panel in the player, tidier comments
+- "Who's watching?" profile picker with a background colour taken from the profile picture
+- search screen with letter grid and search history, like the YouTube app
+- faster startup (the security token is stored and created ahead of time)
+- updates through the [releases](https://github.com/ingesluis1/SmartTube/releases) of this repository
 
-**Installeren:** download de nieuwste apk onder Releases (`armeabi-v7a` voor de meeste tv's) en installeer die met de app Downloader.
+All changes are marked in the code with `MOD (Inge)`.
 
-**Zelf bouwen:** JDK 17, dan `./gradlew assembleStstableDebug`. Voor een release-build heb je een eigen `keystore.properties` met ondertekeningssleutel nodig (staat niet in deze repository).
+**Install:** download the latest apk under Releases (`armeabi-v7a` for most TVs) and install it with the Downloader app.
 
-**Let op:** ik heb deze versie alleen getest op een Android TV-emulator en op een Philips 65OLED810 (Google TV). Op andere tv's of boxen kan het anders werken. Ik maak dit voor mezelf en geef geen support: kom je een bug tegen, fork de repository dan gerust en los het zelf op. Meld problemen met deze versie ook niet bij de oorspronkelijke maker van SmartTube.
+**Build it yourself:** JDK 17, then `./gradlew assembleStstableDebug`. For a release build you need your own `keystore.properties` with a signing key (not included in this repository).
 
-Meer over de originele app, zoals alle functies en ondersteunde apparaten, staat bij [yuliskov/SmartTube](https://github.com/yuliskov/SmartTube).
+**Note:** I have only tested this version on an Android TV emulator and on a Philips 65OLED810 (Google TV). It may behave differently on other TVs or boxes. I made this for myself and don't offer support: if you run into a bug, feel free to fork the repository and fix it yourself. Please don't report problems with this version to the original SmartTube developer either.
+
+More about the original app, such as all features and supported devices, can be found at [yuliskov/SmartTube](https://github.com/yuliskov/SmartTube).
