@@ -776,7 +776,7 @@
     <string name="settings_desc_remote">Control playback from your phone with the YouTube app or a link code.</string>
     <string name="settings_desc_language">Choose the app language and the country used for recommendations.</string>
     <string name="settings_desc_general">Menu sections, startup screen, screensaver and other app behaviour.</string>
-    <string name="settings_desc_ui">Tile size, colour scheme, fonts and animations.</string>
+    <string name="settings_desc_ui">Accent color, tile size, fonts and animations.</string>
     <string name="settings_desc_player">Playback mode, video quality, speed, buttons and audio.</string>
     <string name="settings_desc_afr">Match the refresh rate of the TV to the video for smoother motion.</string>
     <string name="settings_desc_subtitles">Subtitle language, size, colour and position.</string>
@@ -786,4 +786,16 @@
     <string name="settings_desc_backup">Save your settings and history, or restore them on another device.</string>
     <string name="settings_desc_about">Version, updates and information about the app.</string>
     <string name="settings_open_hint">Press OK to open</string>
+    <!-- MOD (Inge): accentkleur -->
+    <string name="accent_color">Accent color</string>
+    <string name="accent_color_desc">Used for the progress bar in the player, the watched bar under videos, checkmarks and switches. Applies right away.</string>
+    <string name="accent_red">Red (YouTube)</string>
+    <string name="accent_blue">Blue</string>
+    <string name="accent_teal">Teal</string>
+    <string name="accent_green">Green</string>
+    <string name="accent_purple">Purple</string>
+    <string name="accent_pink">Pink</string>
+    <string name="accent_orange">Orange</string>
+    <string name="accent_yellow">Yellow</string>
+    <string name="accent_white">White</string>
 </resources>

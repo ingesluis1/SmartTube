@@ -154,6 +154,11 @@ public class AppPreferenceManager {
 
         initSingleSelectListPreference(category, pref);
 
+        // MOD (Inge): uitleg onder de titel
+        if (category.description != null) {
+            pref.setDialogMessage(category.description);
+        }
+
         return pref;
     }
 

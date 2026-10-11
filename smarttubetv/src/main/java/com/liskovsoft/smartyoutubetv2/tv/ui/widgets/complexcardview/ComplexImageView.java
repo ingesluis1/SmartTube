@@ -149,6 +149,9 @@ public class ComplexImageView extends RelativeLayout {
             return;
         }
         if (percent > 0) {
+            // MOD (Inge): "bekeken"-lijn in de accentkleur
+            mProgressBar.setProgressTintList(android.content.res.ColorStateList.valueOf(
+                    com.liskovsoft.smartyoutubetv2.common.prefs.AccentColor.get(getContext())));
             mProgressBar.setProgress(percent);
             mProgressBar.setVisibility(View.VISIBLE);
         } else {

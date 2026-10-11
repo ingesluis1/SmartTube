@@ -160,6 +160,7 @@ public class LeanbackListPreferenceDialogFragment extends LeanbackPreferenceDial
         verticalGridView.setWindowAlignment(VerticalGridView.WINDOW_ALIGN_BOTH_EDGE);
         verticalGridView.setFocusScrollStrategy(VerticalGridView.FOCUS_SCROLL_ALIGNED);
         verticalGridView.setAdapter(onCreateAdapter());
+        com.liskovsoft.smartyoutubetv2.tv.util.AccentUi.watch(verticalGridView); // MOD (Inge): accentkleur
         verticalGridView.requestFocus();
 
         final CharSequence title = mDialogTitle;
@@ -205,12 +206,25 @@ public class LeanbackListPreferenceDialogFragment extends LeanbackPreferenceDial
                 }
             });
 
-            // Modified. Remove other views.
-            ViewGroup parent = (ViewGroup) verticalGridView.getParent();
-            parent.removeView(verticalGridView);
+            if (keepListWithMessage()) {
+                // MOD (Inge): uitleg boven een keuzelijst; lijst blijft staan en krijgt de focus
+                messageView.setFocusable(false);
+                verticalGridView.requestFocus();
+            } else {
+                // Modified. Remove other views.
+                ViewGroup parent = (ViewGroup) verticalGridView.getParent();
+                parent.removeView(verticalGridView);
+            }
         }
 
         return view;
+    }
+
+    /**
+     * MOD (Inge): true = een uitlegtekst staat boven de lijst i.p.v. de lijst te vervangen.
+     */
+    protected boolean keepListWithMessage() {
+        return false;
     }
 
     public RecyclerView.Adapter<ViewHolder> onCreateAdapter() {

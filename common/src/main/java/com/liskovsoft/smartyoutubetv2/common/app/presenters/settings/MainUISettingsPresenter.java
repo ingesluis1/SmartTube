@@ -89,9 +89,24 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendColorScheme(AppDialogPresenter settingsPresenter) {
-        List<ColorScheme> colorSchemes = mMainUIData.getColorSchemes();
+        // MOD (Inge): kleurenschema's doen niets in de YouTube-stijl; daarom een accentkleur die direct werkt
+        List<OptionItem> options = new ArrayList<>();
+        int selected = com.liskovsoft.smartyoutubetv2.common.prefs.AccentColor.getIndex(getContext());
+        for (int i = 0; i < com.liskovsoft.smartyoutubetv2.common.prefs.AccentColor.COLORS.length; i++) {
+            final int index = i;
+            android.text.SpannableStringBuilder title = new android.text.SpannableStringBuilder("\u25CF  ");
+            title.setSpan(new android.text.style.ForegroundColorSpan(com.liskovsoft.smartyoutubetv2.common.prefs.AccentColor.COLORS[i]),
+                    0, 1, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            title.append(getContext().getString(com.liskovsoft.smartyoutubetv2.common.prefs.AccentColor.NAMES[i]));
+            options.add(UiOptionItem.from(title,
+                    option -> com.liskovsoft.smartyoutubetv2.common.prefs.AccentColor.setIndex(getContext(), index),
+                    i == selected));
+        }
 
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.color_scheme), fromColorSchemes(colorSchemes));
+        com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionCategory category =
+                com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionCategory.radioList(getContext().getString(R.string.accent_color), options);
+        category.description = getContext().getString(R.string.accent_color_desc);
+        settingsPresenter.appendCategory(category);
     }
 
     private List<OptionItem> fromColorSchemes(List<ColorScheme> colorSchemes) {

@@ -400,6 +400,11 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View view = super.onCreateView(inflater, container, savedInstanceState);
 
+            // MOD (Inge): schakelaars en vakjes in de accentkleur
+            if (view != null) {
+                com.liskovsoft.smartyoutubetv2.tv.util.AccentUi.watch(view.findViewById(androidx.preference.R.id.recycler_view));
+            }
+
             if (mIsTransparent && view != null) {
                 // Enable transparent shadow outline on parent (R.id.settings_preference_fragment_container)
                 ViewUtil.enableTransparentDialog(getActivity(), getParentFragment().getView());

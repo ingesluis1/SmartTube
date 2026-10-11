@@ -93,6 +93,8 @@ public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
                 mTransportViewHolder = new WeakReference<>(viewHolder);
 
                 viewHolder.setTopEdgeFocusListener(MaxControlsVideoPlayerGlue.this);
+                // MOD (Inge): voortgangsbalk in de accentkleur
+                viewHolder.mProgressBar.setProgressColor(com.liskovsoft.smartyoutubetv2.common.prefs.AccentColor.get(getContext()));
                 // MOD (Inge): beschrijving boven de balk verbergen; de titel staat linksboven als overlay
                 viewHolder.mDescriptionDock.setVisibility(View.GONE);
                 viewHolder.mImageView.setVisibility(View.GONE);

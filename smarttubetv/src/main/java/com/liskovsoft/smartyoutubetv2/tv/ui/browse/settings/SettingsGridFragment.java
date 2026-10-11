@@ -388,6 +388,18 @@ public class SettingsGridFragment extends GridFragment implements SettingsSectio
         if (markResId != 0) {
             ImageView mark = new ImageView(getContext());
             mark.setImageResource(markResId);
+            // MOD (Inge): vinkjes, vakjes en schakelaars in de accentkleur
+            int accent = com.liskovsoft.smartyoutubetv2.common.prefs.AccentColor.get(getContext());
+            if (markResId == R.drawable.pref_check_on || markResId == R.drawable.pref_box_on) {
+                mark.setImageTintList(android.content.res.ColorStateList.valueOf(accent));
+            } else if (markResId == R.drawable.pref_switch_on) {
+                android.graphics.drawable.Drawable d = mark.getDrawable().mutate();
+                if (d instanceof android.graphics.drawable.LayerDrawable) {
+                    android.graphics.drawable.LayerDrawable layers = (android.graphics.drawable.LayerDrawable) d;
+                    layers.getDrawable(1).setTint((accent & 0x00FFFFFF) | 0x80000000);
+                    layers.getDrawable(2).setTint(accent);
+                }
+            }
             boolean isSwitch = markResId == R.drawable.pref_switch_on || markResId == R.drawable.pref_switch_off;
             LinearLayout.LayoutParams ml = new LinearLayout.LayoutParams(dp(isSwitch ? 38 : 24), dp(24));
             ml.leftMargin = dp(16);

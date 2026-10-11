@@ -53,6 +53,11 @@ public class RadioListPreferenceDialogFragment extends LeanbackListPreferenceDia
         return view;
     }
 
+    @Override
+    protected boolean keepListWithMessage() {
+        return true; // MOD (Inge)
+    }
+
     public void enableTransparent(boolean enable) {
         mIsTransparent = enable;
     }

@@ -72,4 +72,6 @@ public class OptionCategory {
     public final int type;
     public final CharSequence title;
     public final List<OptionItem> options;
+    // MOD (Inge): korte uitleg onder de titel van het optievlak
+    public CharSequence description;
 }
