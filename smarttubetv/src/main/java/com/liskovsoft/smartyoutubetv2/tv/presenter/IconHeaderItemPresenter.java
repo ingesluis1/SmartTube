@@ -46,6 +46,9 @@ public class IconHeaderItemPresenter extends RowHeaderPresenter {
 
         View view = inflater.inflate(R.layout.icon_header_item, null);
         view.setAlpha(1f); // MOD (Inge): niet dimmen; het witte focusvlak geeft de selectie aan
+        // MOD (Inge): vaste breedte (layout_width uit de xml gaat verloren bij inflate zonder ouder)
+        int width = viewGroup.getResources().getDimensionPixelSize(R.dimen.nav_item_width);
+        view.setLayoutParams(new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         return new ViewHolder(view);
     }

@@ -62,7 +62,7 @@
 
     <!-- MOD (Inge): navigatiestrook links; inhoud en bovenbalk beginnen rechts ervan -->
     <dimen name="nav_strip_width">72dp</dimen>
-    <dimen name="nav_item_width">230dp</dimen>
+    <dimen name="nav_item_width">176dp</dimen>
     <dimen name="nav_strip_padding_top">104dp</dimen>
     <dimen name="nav_content_padding_start">78dp</dimen>
 
