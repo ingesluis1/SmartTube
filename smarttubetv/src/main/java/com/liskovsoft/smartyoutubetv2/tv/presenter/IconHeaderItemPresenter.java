@@ -81,7 +81,16 @@ public class IconHeaderItemPresenter extends RowHeaderPresenter {
                 iconView.setImageDrawable(icon);
                 // MOD (Inge): icoon kleurt mee met de tekst (zwart op het witte focusvlak)
                 if (android.os.Build.VERSION.SDK_INT >= 21) {
-                    iconView.setImageTintList(ContextCompat.getColorStateList(rootView.getContext(), R.color.nav_item_text));
+                    if (mResId == R.drawable.ic_nav_update) {
+                        // MOD (Inge): update-icoon in de accentkleur (donker op het witte focusvlak als de accentkleur wit is)
+                        int accent = com.liskovsoft.smartyoutubetv2.common.prefs.AccentColor.get(rootView.getContext());
+                        int focused = accent == 0xFFF1F1F1 ? 0xFF0F0F0F : accent;
+                        iconView.setImageTintList(new android.content.res.ColorStateList(
+                                new int[][] {{android.R.attr.state_focused, android.R.attr.state_window_focused}, {}},
+                                new int[] {focused, accent}));
+                    } else {
+                        iconView.setImageTintList(ContextCompat.getColorStateList(rootView.getContext(), R.color.nav_item_text));
+                    }
                 }
             }
         }

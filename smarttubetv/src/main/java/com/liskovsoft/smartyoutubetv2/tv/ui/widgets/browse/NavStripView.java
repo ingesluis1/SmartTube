@@ -83,7 +83,9 @@ public class NavStripView extends LinearLayout {
             } else if (item.resId > 0) {
                 icon.setImageResource(item.resId);
                 if (VERSION.SDK_INT >= 21) {
-                    icon.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.nav_strip_icon));
+                    icon.setImageTintList(item.resId == R.drawable.ic_nav_update
+                            ? android.content.res.ColorStateList.valueOf(com.liskovsoft.smartyoutubetv2.common.prefs.AccentColor.get(getContext())) // MOD (Inge)
+                            : ContextCompat.getColorStateList(getContext(), R.color.nav_strip_icon));
                 }
             }
             addView(icon);

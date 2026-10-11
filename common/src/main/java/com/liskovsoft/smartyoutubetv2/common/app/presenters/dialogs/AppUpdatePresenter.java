@@ -113,7 +113,7 @@ public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdate
             return;
         }
 
-        BrowsePresenter.instance(getContext()).pinItem(getContext().getString(R.string.update_found), R.drawable.action_info, new ErrorFragmentData() {
+        BrowsePresenter.instance(getContext()).pinItem(getContext().getString(R.string.update_found), R.drawable.ic_nav_update, /* MOD (Inge): download-icoon in accentkleur */ new ErrorFragmentData() {
             @Override
             public void onAction() {
                 GeneralData.instance(getContext()).setChangelog(changelog);
