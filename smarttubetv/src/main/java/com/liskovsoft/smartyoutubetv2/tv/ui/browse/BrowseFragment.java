@@ -200,6 +200,8 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
     // en blijft dan zichtbaar (behalve op de instellingenpagina, daar staat de titel "Settings").
     private boolean mInHeadersTransition;
     private int mDockBaseline = -1;
+    private int mLastDockX = Integer.MIN_VALUE;
+    private boolean mSkippedJump;
     private android.graphics.drawable.GradientDrawable mTitleFade;
 
     @Override
@@ -245,6 +247,16 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
         int[] loc = new int[2];
         dock.getLocationOnScreen(loc);
         int dockX = loc[0];
+
+        // Leanback zet het tegelvlak eerst één frame op de eindpositie en animeert daarna pas vanaf het begin.
+        // Zo'n sprong (bijna de hele menubreedte in één frame) één frame negeren, anders flitst de balk.
+        int jumpLimit = getResources().getDimensionPixelSize(R.dimen.lb_browse_headers_width) * 3 / 4;
+        if (mLastDockX != Integer.MIN_VALUE && Math.abs(dockX - mLastDockX) > jumpLimit && !mSkippedJump) {
+            mSkippedJump = true;
+            return;
+        }
+        mSkippedJump = false;
+        mLastDockX = dockX;
         if (!isShowingHeaders() && !mInHeadersTransition) {
             mDockBaseline = dockX;
         }
