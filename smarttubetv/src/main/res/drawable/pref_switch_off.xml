@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- MOD (Inge): schuifje (uit) voor het voorbeeld rechts op de instellingenpagina -->
+<!-- MOD (Inge): schuifje (off) voor het voorbeeld rechts op de instellingenpagina; vaste maten zodat de knop rond blijft -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:left="3dp" android:right="3dp" android:top="5dp" android:bottom="5dp">
-        <shape android:shape="rectangle"><corners android:radius="7dp" /><solid android:color="#4DFFFFFF" /><size android:width="36dp" android:height="24dp" /></shape>
+    <item android:width="38dp" android:height="24dp">
+        <shape android:shape="rectangle"><solid android:color="#00000000" /></shape>
     </item>
-    <item android:right="18dp" android:top="2dp" android:bottom="2dp">
-        <shape android:shape="oval"><solid android:color="#FFBDBDBD" /><size android:width="20dp" android:height="20dp" /></shape>
+    <item android:width="32dp" android:height="14dp" android:gravity="center">
+        <shape android:shape="rectangle"><corners android:radius="7dp" /><solid android:color="#4DFFFFFF" /></shape>
+    </item>
+    <item android:width="20dp" android:height="20dp" android:gravity="center_vertical|start" android:left="1dp" android:right="1dp">
+        <shape android:shape="oval"><solid android:color="#FFBDBDBD" /></shape>
     </item>
 </layer-list>
