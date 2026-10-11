@@ -366,7 +366,8 @@ public class SplashPresenter extends BasePresenter<SplashView> {
         boolean isATVIntent = IntentExtractor.isATVIntent(intent);
         boolean isExternalIntent = !isRestartIntent && !isATVIntent && !viewManager.isTopViewVisible();
 
-        viewManager.enablePlayerOnlyMode((isATVIntent && GeneralData.instance(getContext()).isReturnToLauncherEnabled()) || isExternalIntent);
+        // MOD (Inge): terug in de speler gaat altijd naar het overzicht, ook bij video's die van buitenaf zijn gestart
+        viewManager.enablePlayerOnlyMode(isATVIntent && GeneralData.instance(getContext()).isReturnToLauncherEnabled());
     }
 
     private void updateBadgeIcon() {
