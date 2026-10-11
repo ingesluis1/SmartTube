@@ -101,6 +101,8 @@ public class MainApplication extends MultiDexApplication { // fix: Didn't find c
         viewManager.register(ChannelView.class, ChannelActivity.class, BrowseActivity.class);
         viewManager.register(ChannelUploadsView.class, ChannelUploadsActivity.class, BrowseActivity.class);
         viewManager.register(WebBrowserView.class, WebBrowserActivity.class, BrowseActivity.class);
+        viewManager.register(com.liskovsoft.smartyoutubetv2.common.app.views.ProfilePickerView.class,
+                com.liskovsoft.smartyoutubetv2.tv.ui.profile.ProfilePickerActivity.class, BrowseActivity.class); // MOD (Inge)
     }
 
     /**

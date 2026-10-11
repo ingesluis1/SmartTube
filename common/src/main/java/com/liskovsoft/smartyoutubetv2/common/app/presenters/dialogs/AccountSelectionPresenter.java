@@ -71,15 +71,14 @@ public class AccountSelectionPresenter extends BasePresenter<Void> {
     }
 
     private void createAndShowDialog(List<Account> accounts, List<Drawable> icons, boolean force) {
-        if (accounts.size() <= 1 && !force) {
+        if (accounts.isEmpty() && !force) { // MOD (Inge): ook bij één account tonen, zoals YouTube
             return;
         }
 
-        AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(getContext());
-
-        appendAccountSelection(accounts, icons, dialogPresenter);
-
-        dialogPresenter.showDialog(getContext().getString(R.string.settings_accounts), this::unhold);
+        // MOD (Inge): volledig profielscherm zoals de YouTube-app i.p.v. een lijst in een dialoog
+        com.liskovsoft.smartyoutubetv2.common.app.views.ViewManager.instance(getContext())
+                .startView(com.liskovsoft.smartyoutubetv2.common.app.views.ProfilePickerView.class, true);
+        unhold();
     }
 
     private void appendAccountSelection(List<Account> accounts, List<Drawable> icons, AppDialogPresenter settingsPresenter) {

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MOD (Inge): één profiel: ronde avatar met witte rand bij focus, naam en e-mail eronder -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="190dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:focusable="true"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:duplicateParentState="true"
+        android:foreground="@drawable/profile_focus_ring">
+
+        <ImageView
+            android:id="@+id/profile_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="7dp"
+            android:scaleType="centerCrop" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
+        android:maxLines="1"
+        android:textColor="#F1F1F1"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/profile_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif"
+        android:maxLines="1"
+        android:textColor="#AAAAAA"
+        android:textSize="14sp"
+        android:visibility="invisible" />
+</LinearLayout>

@@ -100,7 +100,7 @@ public class AccountsData implements AccountChangeListener {
 
         String[] split = Helpers.splitData(data);
 
-        mIsSelectAccountOnBootEnabled = Helpers.parseBoolean(split, 0, false);
+        mIsSelectAccountOnBootEnabled = Helpers.parseBoolean(split, 0, true); // MOD (Inge): profielkeuze bij opstarten standaard aan
         // mIsAccountProtectedWithPassword
         // mAccountPassword
         String[] passwords = Helpers.parseArray(split, 3);
