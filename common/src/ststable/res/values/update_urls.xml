@@ -4,6 +4,5 @@
     <string-array name="update_urls">
         <item>https://updates.stacklines.nl/smarttube/stable.json</item>
         <item>http://192.168.1.177:8410/smarttube/stable.json</item>
-        <!--TEST-PC--><item>http://192.168.1.159:8000/smarttube/stable.json</item>
     </string-array>
 </resources>
