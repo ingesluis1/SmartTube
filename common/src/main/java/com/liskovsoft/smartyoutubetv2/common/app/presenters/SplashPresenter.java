@@ -116,6 +116,7 @@ public class SplashPresenter extends BasePresenter<SplashView> {
 
     private void runBackgroundTasks() {
         YouTubeServiceManager.instance().refreshCacheIfNeeded(); // warm up player engine
+        RxHelper.runAsync(com.liskovsoft.youtubeapi.app.PoTokenWarmUp::warmUp); // MOD (Inge): TV poToken alvast aanmaken
         enableHistoryIfNeeded();
         Utils.updateChannels(getContext());
         GDriveBackupWorker.schedule(getContext());
@@ -137,6 +138,10 @@ public class SplashPresenter extends BasePresenter<SplashView> {
     }
 
     private void checkForUpdates() {
+        // MOD (Inge): eigen build, geen automatische update-check (anders overschrijft de updater deze versie)
+        if (true) {
+            return;
+        }
         BootDialogPresenter updatePresenter = BootDialogPresenter.instance(getContext());
         updatePresenter.start();
     }
