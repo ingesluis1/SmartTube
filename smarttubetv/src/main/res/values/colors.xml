@@ -22,6 +22,10 @@
     <color name="card_default_background">#0096a6</color>
     <color name="card_default_background_dark">#004B53</color>
     <color name="card_default_text">#FFFFFF</color>
+    <!-- MOD (Inge): YouTube-stijl kaarttekst en focusrand -->
+    <color name="card_title_text">#F1F1F1</color>
+    <color name="card_content_text">#AAAAAA</color>
+    <color name="card_focus_outline">#FFFFFF</color>
 
     <!-- Browse fragment colors -->
     <color name="shelf_background">#282828</color>

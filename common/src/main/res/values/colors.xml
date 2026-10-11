@@ -21,6 +21,8 @@
     <color name="live_chat_bg">#90000000</color>
     <color name="live_chat_bg_pressed">#52C2DCF2</color>
     <color name="comments_bg">#303030</color>
+    <!-- MOD (Inge): subtiele focusmarkering van een reactie -->
+    <color name="comments_bg_focused">#2EFFFFFF</color>
     <!-- Focused comment color. Default: #17C2DCF2 -->
     <color name="comments_bg_pressed">#27C2DCF2</color>
     <color name="semi_grey">#64282828</color>

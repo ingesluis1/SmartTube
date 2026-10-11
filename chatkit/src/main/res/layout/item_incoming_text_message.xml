@@ -8,8 +8,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
-    android:layout_marginLeft="16dp"
+    android:layout_marginBottom="14dp"
+    android:layout_marginLeft="12dp"
     android:layout_marginRight="3dp"
     android:layout_marginTop="0dp"
     android:focusable="false">
@@ -17,10 +17,10 @@
     <!-- Move author icon to the top android:layout_alignParentBottom="true"->android:layout_alignParentTop="true", add new android:layout_marginTop="2dp" -->
     <com.stfalcon.chatkit.utils.ShapeImageView
         android:id="@id/messageUserAvatar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp" />
 
@@ -50,8 +50,8 @@
             android:id="@id/messageText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed"
-            android:lineSpacingMultiplier="0.9"
+            android:fontFamily="sans-serif"
+            android:lineSpacingMultiplier="1.1"
             android:maxLines="50" />
 
         <TextView

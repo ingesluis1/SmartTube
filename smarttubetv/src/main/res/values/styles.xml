@@ -24,6 +24,41 @@
         <item name="android:verticalSpacing">@dimen/browse_headers_vertical_spacing</item>
     </style>
 
+    <!-- MOD (Inge): kaarten in YouTube-stijl: tekst los onder de thumbnail, gewone letter -->
+    <style name="App.ImageCardView.TitleStyle" parent="Widget.Leanback.ImageCardView.TitleStyle">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/card_title_text</item>
+        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="android:layout_marginBottom">3dp</item>
+    </style>
+    <style name="App.ImageCardView.ContentStyle" parent="Widget.Leanback.ImageCardView.ContentStyle">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/card_content_text</item>
+    </style>
+    <style name="App.ImageCardView.InfoAreaStyle" parent="Widget.Leanback.ImageCardView.InfoAreaStyle">
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingStart">4dp</item>
+        <item name="android:paddingEnd">4dp</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <!-- MOD (Inge): speler-titel in gewone letter i.p.v. dunne letter (overschrijft Leanback-stijl met dezelfde naam) -->
+    <style name="TextAppearance.Leanback.DetailsDescriptionTitle">
+        <item name="android:textSize">@dimen/lb_details_description_title_text_size</item>
+        <item name="android:textColor">@color/lb_details_description_color</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <!-- MOD (Inge): rijkoppen in gewone letter -->
+    <style name="TextAppearance.Leanback.Header" parent="TextAppearance.Leanback">
+        <item name="android:textSize">@dimen/lb_browse_header_text_size</item>
+        <item name="android:textColor">@color/lb_browse_header_color</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
     <!-- Color scheme: Teal (Default) -->
     <style name="App.Theme.Leanback.Player" parent="Theme.Leanback">
         <!-- <item name="android:windowBackground">@null</item> -->
@@ -32,6 +67,9 @@
         <item name="shelfBackground">@color/shelf_background_dark</item>
         <item name="cardDefaultBackground">@color/card_default_background_dark</item>
         <item name="cardSelectedBackground">@color/card_selected_background_white</item>
+        <item name="imageCardViewTitleStyle">@style/App.ImageCardView.TitleStyle</item>
+        <item name="imageCardViewContentStyle">@style/App.ImageCardView.ContentStyle</item>
+        <item name="imageCardViewInfoAreaStyle">@style/App.ImageCardView.InfoAreaStyle</item>
         <item name="cardProgressStyle">?android:attr/progressBarStyleHorizontal</item>
         <item name="android:colorAccent" tools:targetApi="21">@color/fastlane_background</item>
         <item name="itemsVerticalGridStyle">@style/GridViewStyle</item>
@@ -53,6 +91,9 @@
         <item name="shelfBackground">@color/shelf_background_dark</item>
         <item name="cardDefaultBackground">@color/card_default_background_dark</item>
         <item name="cardSelectedBackground">@color/card_selected_background_white</item>
+        <item name="imageCardViewTitleStyle">@style/App.ImageCardView.TitleStyle</item>
+        <item name="imageCardViewContentStyle">@style/App.ImageCardView.ContentStyle</item>
+        <item name="imageCardViewInfoAreaStyle">@style/App.ImageCardView.InfoAreaStyle</item>
         <item name="cardProgressStyle">?android:attr/progressBarStyleHorizontal</item>
         <item name="appLogo">@mipmap/app_logo</item>
         <item name="android:colorAccent" tools:targetApi="21">@color/fastlane_background</item>

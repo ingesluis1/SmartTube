@@ -790,8 +790,8 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         // mIsAbsoluteDateEnabled
         mSeekPreviewMode = Helpers.parseInt(split, 3, SEEK_PREVIEW_SINGLE);
         mIsSeekConfirmPauseEnabled = Helpers.parseBoolean(split, 4, false);
-        mIsClockEnabled = Helpers.parseBoolean(split, 5, true);
-        mIsRemainingTimeEnabled = Helpers.parseBoolean(split, 6, true);
+        mIsClockEnabled = Helpers.parseBoolean(split, 5, false); // MOD (Inge): standaard uit
+        mIsRemainingTimeEnabled = Helpers.parseBoolean(split, 6, false); // MOD (Inge): standaard uit
         mBackgroundMode = Helpers.parseInt(split, 7, PlayerEngine.BACKGROUND_MODE_DEFAULT);
         // afrData was there
         mVideoFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 9)), getDefaultVideoFormat());
@@ -812,7 +812,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mIsLegacyCodecsForced = Helpers.parseBoolean(split, 24, false);
         mSleepTimerHours = Helpers.parseFloat(split, 25, 0);
         // old player tweaks
-        mIsQualityInfoEnabled = Helpers.parseBoolean(split, 28, true);
+        mIsQualityInfoEnabled = Helpers.parseBoolean(split, 28, false); // MOD (Inge): standaard uit
         mIsSpeedPerVideoEnabled = Helpers.parseBoolean(split, 29, false);
         mAspectRatio = Helpers.parseFloat(split, 30, PlayerEngine.ASPECT_RATIO_DEFAULT);
         mIsGlobalClockEnabled = Helpers.parseBoolean(split, 31, false);

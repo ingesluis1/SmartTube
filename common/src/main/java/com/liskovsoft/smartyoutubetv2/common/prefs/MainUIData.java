@@ -436,7 +436,7 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         mChannelCategorySorting = Helpers.parseInt(split, 5, CHANNEL_SORTING_LAST_VIEWED);
         mPlaylistsStyle = Helpers.parseInt(split, 6, PLAYLISTS_STYLE_GRID);
         mCardTitleLinesNum = Helpers.parseInt(split, 7, 1);
-        mIsCardTextAutoScrollEnabled = Helpers.parseBoolean(split, 8, true);
+        mIsCardTextAutoScrollEnabled = Helpers.parseBoolean(split, 8, false); // MOD (Inge): geen schuivende titels, zoals YouTube
         mIsUploadsOldLookEnabled = Helpers.parseBoolean(split, 9, false);
         mIsUploadsAutoLoadEnabled = Helpers.parseBoolean(split, 10, true);
         mCardTextScrollSpeed = Helpers.parseFloat(split, 11, 2);

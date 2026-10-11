@@ -2,6 +2,10 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.widgets.complexcardview;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Outline;
+import android.os.Build.VERSION;
+import android.view.ViewOutlineProvider;
+import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +63,21 @@ public class ComplexImageView extends RelativeLayout {
         mProgressBar = findViewById(R.id.clip_progress);
         mProgressContainer = findViewById(R.id.clip_info);
         mPreviewContainer = findViewById(R.id.preview_container);
+
+        // MOD (Inge): thumbnail zelf afronden en een witte rand tonen bij selectie (YouTube-stijl)
+        if (VERSION.SDK_INT >= 21) {
+            final float radius = getResources().getDimension(R.dimen.lb_rounded_rect_corner_radius);
+            setOutlineProvider(new ViewOutlineProvider() {
+                @Override
+                public void getOutline(View view, Outline outline) {
+                    outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), radius);
+                }
+            });
+            setClipToOutline(true);
+        }
+        if (VERSION.SDK_INT >= 23) {
+            setForeground(ContextCompat.getDrawable(getContext(), R.drawable.card_focus_outline));
+        }
     }
 
     /**

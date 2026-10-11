@@ -1,7 +1,11 @@
 package com.liskovsoft.smartyoutubetv2.tv.ui.widgets.chat;
 
 import android.content.Context;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 
 import com.liskovsoft.mediaserviceinterfaces.data.ChatItem;
 import com.liskovsoft.mediaserviceinterfaces.data.CommentItem;
@@ -42,20 +46,47 @@ public class ChatItemMessage implements IMessage {
         ChatItemMessage message = new ChatItemMessage();
         message.mId = commentItem.getId();
         if (commentItem.getMessage() != null && !commentItem.getMessage().trim().isEmpty()) {
+            // MOD (Inge): opbouw zoals de YouTube-app.
+            // Regel 1: naam en datum, klein en grijs. Dan de tekst in het wit. Daaronder likes en antwoorden, klein en grijs.
             CharSequence header = ServiceHelper.combineItems(
                     " " + Video.TERTIARY_TEXT_DELIM + " ",
                     commentItem.getAuthorName(),
-                    commentItem.getLikeCount() != null ? String.format("%s %s", commentItem.getLikeCount(), Helpers.THUMB_UP) : null,
-                    commentItem.getPublishedDate(),
+                    commentItem.getPublishedDate());
+            CharSequence footer = ServiceHelper.combineItems(
+                    "    ",
+                    commentItem.getLikeCount() != null ? String.format("%s %s", Helpers.THUMB_UP, commentItem.getLikeCount()) : null,
                     commentItem.getReplyCount(),
                     commentItem.isLiked() ? String.format("(%s)", context.getString(R.string.you_liked)) : null);
-            message.mText = TextUtils.concat(Utils.bold(header), "\n", Utils.createSmallNewLine(), commentItem.getMessage());
+
+            SpannableStringBuilder builder = new SpannableStringBuilder();
+            appendMeta(builder, header);
+            builder.append("\n");
+            builder.append(commentItem.getMessage());
+            if (!TextUtils.isEmpty(footer)) {
+                builder.append("\n");
+                appendMeta(builder, footer);
+            }
+            message.mText = builder;
         }
         message.mAuthor = ChatItemAuthor.from(commentItem);
         message.mCreatedAt = new Date();
         message.mCommentItem = commentItem;
 
         return message;
+    }
+
+    private static final int META_COLOR = 0xFFAAAAAA;
+    private static final float META_SIZE = 0.87f;
+
+    private static void appendMeta(SpannableStringBuilder builder, CharSequence text) {
+        if (TextUtils.isEmpty(text)) {
+            return;
+        }
+        int start = builder.length();
+        builder.append(text);
+        int end = builder.length();
+        builder.setSpan(new ForegroundColorSpan(META_COLOR), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan(new RelativeSizeSpan(META_SIZE), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
     public static List<ChatItemMessage> fromSplit(Context context, CommentItem commentItem) {
