@@ -35,9 +35,10 @@
     <color name="player_background">#FF000000</color>
 
     <!-- Dark color scheme -->
-    <color name="scheme_grey_background">#181818</color>
-    <color name="scheme_grey_background_dark">#181818</color>
-    <color name="scheme_grey_shelf_background_dark">#000000</color>
+    <!-- MOD (Inge): zelfde achtergrond als de YouTube-app (#0F0F0F), ook voor het menu -->
+    <color name="scheme_grey_background">#0F0F0F</color>
+    <color name="scheme_grey_background_dark">#0F0F0F</color>
+    <color name="scheme_grey_shelf_background_dark">#0F0F0F</color>
     <color name="scheme_grey_card_background_dark">#121212</color>
 
     <!-- Red color scheme -->
