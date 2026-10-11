@@ -754,6 +754,9 @@
     <string name="profile_picker_title">Who\'s watching?</string>
     <string name="profile_picker_guest">Watch as guest</string>
     <string name="profile_picker_add">Add account</string>
+    <string name="search_kbd_space">Space</string>
+    <string name="search_kbd_clear">Clear</string>
+    <string name="search_kbd_search">Search</string>
     <plurals name="hours">
         <item quantity="one">%s hour</item>
         <item quantity="other">%s hours</item>

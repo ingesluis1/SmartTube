@@ -69,6 +69,8 @@
     <color name="orb_color">#272727</color>
     <color name="orb_bright_color">#F1F1F1</color>
     <color name="top_button_bg">#272727</color>
+    <!-- MOD (Inge): getypte zoektekst wit (Leanback: halfdoorzichtig) -->
+    <color name="lb_search_bar_text">#FFF1F1F1</color>
     <color name="orb_icon_color">@color/white</color>
 
     <!-- Search page mic button color -->

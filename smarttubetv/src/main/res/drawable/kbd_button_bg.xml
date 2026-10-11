@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MOD (Inge): SPACE / CLEAR / SEARCH: donkergrijs, wit bij focus -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true">
+        <shape android:shape="rectangle"><corners android:radius="6dp" /><solid android:color="#F1F1F1" /></shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle"><corners android:radius="6dp" /><solid android:color="#272727" /></shape>
+    </item>
+</selector>

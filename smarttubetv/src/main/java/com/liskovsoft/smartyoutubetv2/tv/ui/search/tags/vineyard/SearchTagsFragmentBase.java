@@ -207,7 +207,8 @@ public abstract class SearchTagsFragmentBase extends SearchSupportFragment
         String query = adapter.getAdapterOptions().get(PaginationAdapter.KEY_TAG);
         mSearchTagsProvider.search(query, results -> {
             adapter.addAllItems(results);
-            attachAdapter(0, adapter);
+            // MOD (Inge): geschiedenis/suggesties in de kolom naast het toetsenbord i.p.v. een knopjesrij
+            setKeyboardSuggestions(toCompletions(results));
             // Same suggestions in the keyboard
             //displayCompletions(toCompletions(results));
         });

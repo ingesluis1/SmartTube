@@ -79,6 +79,11 @@
     <!-- MOD (Inge): menu-item niet vergroten bij selectie (YouTube doet dat niet) -->
     <item format="float" name="lb_browse_header_select_scale" type="dimen">1.0</item>
 
+    <!-- MOD (Inge): zoekpaneel (geschiedenis + letterraster) onder de zoekbalk -->
+    <dimen name="search_kbd_panel_top">100dp</dimen>
+    <dimen name="search_kbd_panel_left">56dp</dimen>
+    <dimen name="search_kbd_rows_align_top">330dp</dimen>
+
     <!-- MOD (Inge): rijkoppen niet dimmen (Leanback: 50%) -->
     <item name="lb_browse_header_unselect_alpha" type="fraction">100%</item>
 

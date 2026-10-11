@@ -213,6 +213,10 @@ public class SearchSupportFragment extends Fragment {
     RowsSupportFragment mRowsSupportFragment;
     SearchBar mSearchBar;
     SearchEditText mSearchTextEditor;
+    // MOD (Inge): zoekpaneel zoals YouTube (geschiedenis + letterraster)
+    private SearchKeyboardPanel mKeyboardPanel;
+    private boolean mPanelShown = true;
+    private View mLastPanelFocus;
     SpeechOrbView mSpeechOrbView;
     SearchResultProvider mProvider;
     String mPendingQuery = null;
@@ -454,7 +458,122 @@ public class SearchSupportFragment extends Fragment {
         if (null != mProvider) {
             onSetSearchResultProvider();
         }
+
+        setupKeyboardPanel(searchFrame);
+
         return root;
+    }
+
+    // MOD (Inge): eigen toetsenbord onder de zoekbalk, het systeemtoetsenbord komt niet meer in beeld
+    private void setupKeyboardPanel(FrameLayout searchFrame) {
+        mKeyboardPanel = new SearchKeyboardPanel(searchFrame.getContext(), new SearchKeyboardPanel.Callback() {
+            @Override
+            public String getText() {
+                return getSearchBarText();
+            }
+
+            @Override
+            public void setText(String text) {
+                setSearchQuery(text, false);
+            }
+
+            @Override
+            public void submit(String text) {
+                View focused = mKeyboardPanel.findFocus();
+                setSearchQuery(text, true);
+                // Focus blijft in het paneel (niet naar de zoekbalk springen)
+                if (focused != null) {
+                    mKeyboardPanel.postDelayed(() -> {
+                        if (mSearchBar != null && mSearchBar.hasFocus()) {
+                            focused.requestFocus();
+                        }
+                    }, 700);
+                }
+            }
+
+            @Override
+            public boolean focusResults() {
+                if (mRowsSupportFragment == null || mRowsSupportFragment.getVerticalGridView() == null
+                        || mResultAdapter == null || mResultAdapter.size() == 0) {
+                    return false;
+                }
+                return mRowsSupportFragment.getVerticalGridView().requestFocus();
+            }
+        });
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = getResources().getDimensionPixelSize(com.liskovsoft.smartyoutubetv2.tv.R.dimen.search_kbd_panel_top);
+        lp.leftMargin = getResources().getDimensionPixelSize(com.liskovsoft.smartyoutubetv2.tv.R.dimen.search_kbd_panel_left);
+        searchFrame.addView(mKeyboardPanel, lp);
+
+        // Geen systeemtoetsenbord: het tekstveld kan geen focus meer krijgen
+        mSearchTextEditor.setFocusable(false);
+        mSearchTextEditor.setFocusableInTouchMode(false);
+        mSearchTextEditor.setTextColor(0xFFF1F1F1); // getypte tekst wit, ook zonder focus
+
+        if (mRowsSupportFragment.getVerticalGridView() != null) {
+            mKeyboardPanel.setNextFocusDownTarget(mRowsSupportFragment.getVerticalGridView().getId());
+        }
+
+        searchFrame.getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {
+            if (newFocus == null || mRowsSupportFragment == null || mRowsSupportFragment.getView() == null) {
+                return;
+            }
+            boolean inResults = isDescendant(mRowsSupportFragment.getView(), newFocus);
+            boolean fromResults = oldFocus != null && isDescendant(mRowsSupportFragment.getView(), oldFocus);
+            if (isDescendant(mKeyboardPanel, newFocus)) {
+                mLastPanelFocus = newFocus;
+            }
+            showKeyboardPanel(!inResults);
+            // Omhoog uit de resultaten: terug naar het toetsenbord, niet naar de zoekbalk
+            if (fromResults && isDescendant(mSearchBar, newFocus)) {
+                View target = mLastPanelFocus;
+                mKeyboardPanel.post(() -> {
+                    if (target == null || !target.isAttachedToWindow() || !target.requestFocus()) {
+                        mKeyboardPanel.focusKeyboard();
+                    }
+                });
+            }
+        });
+    }
+
+    private static boolean isDescendant(View parent, View child) {
+        View v = child;
+        while (v != null) {
+            if (v == parent) {
+                return true;
+            }
+            v = v.getParent() instanceof View ? (View) v.getParent() : null;
+        }
+        return false;
+    }
+
+    private void showKeyboardPanel(boolean show) {
+        if (mKeyboardPanel == null || mPanelShown == show) {
+            return;
+        }
+        mPanelShown = show;
+        mKeyboardPanel.setVisibility(show ? View.VISIBLE : View.GONE);
+        applyRowsAlignment();
+    }
+
+    private void applyRowsAlignment() {
+        if (mRowsSupportFragment == null || mRowsSupportFragment.getVerticalGridView() == null) {
+            return;
+        }
+        int top = getResources().getDimensionPixelSize(mPanelShown && mKeyboardPanel != null
+                ? com.liskovsoft.smartyoutubetv2.tv.R.dimen.search_kbd_rows_align_top : R.dimen.lb_search_browse_rows_align_top);
+        mRowsSupportFragment.getVerticalGridView().setWindowAlignmentOffset(top);
+        mRowsSupportFragment.getVerticalGridView().requestLayout();
+    }
+
+    /**
+     * MOD (Inge): suggesties/geschiedenis in de kolom links naast het toetsenbord
+     */
+    protected void setKeyboardSuggestions(List<String> items) {
+        if (mKeyboardPanel != null) {
+            mKeyboardPanel.setSuggestions(items);
+        }
     }
 
     private void resultsAvailable() {
@@ -475,6 +594,13 @@ public class SearchSupportFragment extends Fragment {
         list.setItemAlignmentOffsetPercent(VerticalGridView.ITEM_ALIGN_OFFSET_PERCENT_DISABLED);
         list.setWindowAlignmentOffset(mContainerListAlignTop);
         list.setWindowAlignmentOffsetPercent(VerticalGridView.WINDOW_ALIGN_OFFSET_PERCENT_DISABLED);
+        applyRowsAlignment(); // MOD (Inge): resultaten onder het toetsenbord
+        if (mKeyboardPanel != null) {
+            if (list.getId() == View.NO_ID) {
+                list.setId(View.generateViewId());
+            }
+            mKeyboardPanel.setNextFocusDownTarget(list.getId());
+        }
         list.setWindowAlignment(VerticalGridView.WINDOW_ALIGN_NO_EDGE);
         // VerticalGridView should not be focusable (see b/26894680 for details).
         list.setFocusable(false);
@@ -776,7 +902,13 @@ public class SearchSupportFragment extends Fragment {
     }
 
     public void focusOnSearchField() {
-        mSearchTextEditor.requestFocus(); // MOD: focus on search field
+        // MOD (Inge): focus op het eigen toetsenbord i.p.v. het tekstveld (geen systeemtoetsenbord)
+        if (mKeyboardPanel != null) {
+            showKeyboardPanel(true);
+            mKeyboardPanel.focusKeyboard();
+        } else {
+            mSearchTextEditor.requestFocus();
+        }
     }
 
     protected String getSearchBarText() {
@@ -889,7 +1021,8 @@ public class SearchSupportFragment extends Fragment {
                 || mRowsSupportFragment.getVerticalGridView() == null)
                         ? 0 : mRowsSupportFragment.getVerticalGridView().getId();
         
-        mSearchBar.setNextFocusDownId(viewId);
+        // MOD (Inge): omlaag vanaf de zoekbalk gaat naar het toetsenbord (gewone focus-zoektocht)
+        mSearchBar.setNextFocusDownId(mKeyboardPanel != null && mPanelShown ? View.NO_ID : viewId);
     }
 
     void updateFocus() {
