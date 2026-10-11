@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MOD (Inge): schuifje (aan) voor het voorbeeld rechts op de instellingenpagina -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:left="3dp" android:right="3dp" android:top="5dp" android:bottom="5dp">
+        <shape android:shape="rectangle"><corners android:radius="7dp" /><solid android:color="#803EA6FF" /><size android:width="36dp" android:height="24dp" /></shape>
+    </item>
+    <item android:left="18dp" android:top="2dp" android:bottom="2dp">
+        <shape android:shape="oval"><solid android:color="#FF3EA6FF" /><size android:width="20dp" android:height="20dp" /></shape>
+    </item>
+</layer-list>

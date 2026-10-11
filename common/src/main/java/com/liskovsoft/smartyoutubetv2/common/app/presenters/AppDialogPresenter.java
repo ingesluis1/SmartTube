@@ -30,6 +30,11 @@ public class AppDialogPresenter extends BasePresenter<AppDialogView> {
     private List<OptionCategory> mCategories;
     private boolean mIsExpandable = true;
     private int mId;
+    // MOD (Inge): opties vooraf tonen op de instellingenpagina, zonder dialoog te openen
+    public interface PreviewCallback {
+        void onPreview(CharSequence title, List<OptionCategory> categories, boolean isExpandable);
+    }
+    private PreviewCallback mPreviewCallback;
 
     private CharSequence mBackupTitle;
     private List<OptionCategory> mBackupCategories;
@@ -121,7 +126,29 @@ public class AppDialogPresenter extends BasePresenter<AppDialogView> {
         showDialog(null, onFinish);
     }
 
+    /**
+     * MOD (Inge): de eerstvolgende showDialog() levert de opties aan de callback i.p.v. een dialoog te openen.
+     * Geef null mee om het verzoek in te trekken.
+     */
+    public void capturePreview(PreviewCallback callback) {
+        mPreviewCallback = callback;
+    }
+
     public void showDialog(CharSequence dialogTitle, Runnable onFinish) {
+        if (mPreviewCallback != null) {
+            PreviewCallback callback = mPreviewCallback;
+            mPreviewCallback = null;
+            List<OptionCategory> categories = mCategories;
+            boolean isExpandable = mIsExpandable;
+            resetData();
+            if (!isDialogShown()) {
+                mOnStart.clear();
+                mOnFinish.clear();
+            }
+            callback.onPreview(dialogTitle, categories, isExpandable);
+            return;
+        }
+
         mTitle = dialogTitle;
         mOnFinish.add(onFinish);
         

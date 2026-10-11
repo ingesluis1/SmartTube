@@ -38,6 +38,12 @@ import com.liskovsoft.smartyoutubetv2.tv.ui.common.UriBackgroundManager;
 import com.liskovsoft.smartyoutubetv2.tv.ui.mod.fragments.GridFragment;
 import com.liskovsoft.smartyoutubetv2.tv.util.ViewUtil;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.view.KeyEvent;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionCategory;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
+import com.liskovsoft.smartyoutubetv2.common.app.presenters.AppDialogPresenter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -55,6 +61,13 @@ public class SettingsGridFragment extends GridFragment implements SettingsSectio
     private TextView mDetailDesc;
     private View mDetailPane;
     private SettingsEntry mPendingDetail;
+    // MOD (Inge): opties van het geselecteerde onderdeel meteen rechts tonen (zonder OK)
+    private FrameLayout mPreviewPane;
+    private TextView mPreviewTitle;
+    private LinearLayout mPreviewRows;
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+    private SettingsEntry mPreviewEntry;
+    private final Runnable mBuildPreview = this::buildPreview;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,7 +112,7 @@ public class SettingsGridFragment extends GridFragment implements SettingsSectio
         // MOD (Inge): uitlegvak volgt de selectie
         setOnItemViewSelectedListener((itemViewHolder, item, rowViewHolder, row) -> {
             if (item instanceof SettingsEntry) {
-                showDetail((SettingsEntry) item);
+                requestPreview((SettingsEntry) item);
             }
         });
     }
@@ -153,6 +166,20 @@ public class SettingsGridFragment extends GridFragment implements SettingsSectio
         root.addView(title, tl);
 
         root.addView(createDetailPane(), createDetailParams(left, listTop));
+        root.addView(createPreviewPane(listTop), createPreviewParams(left));
+
+        if (grid != null) {
+            // Rechts = de opties in, net als OK
+            grid.setOnKeyInterceptListener(event -> {
+                if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT && grid.getFocusedChild() != null) {
+                    if (event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
+                        grid.getFocusedChild().performClick();
+                    }
+                    return true;
+                }
+                return false;
+            });
+        }
 
         if (mPendingDetail != null) {
             showDetail(mPendingDetail);
@@ -214,7 +241,166 @@ public class SettingsGridFragment extends GridFragment implements SettingsSectio
         return params;
     }
 
+    private int previewLeft(int left) {
+        return left + getResources().getDimensionPixelSize(R.dimen.settings_row_width) + dp(24);
+    }
+
+    private FrameLayout.LayoutParams createPreviewParams(int left) {
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        params.leftMargin = previewLeft(left);
+        return params;
+    }
+
+    /**
+     * Zelfde plek en maten als het optievlak dat opent bij OK, zodat het voelt alsof je de lijst in stapt.
+     */
+    private View createPreviewPane(int listTop) {
+        FrameLayout pane = new FrameLayout(getContext());
+        pane.setFocusable(false);
+        pane.setClipChildren(true);
+
+        View divider = new View(getContext());
+        divider.setBackgroundColor(0xFF303030);
+        FrameLayout.LayoutParams dl = new FrameLayout.LayoutParams(dp(1), ViewGroup.LayoutParams.MATCH_PARENT);
+        dl.topMargin = listTop;
+        dl.bottomMargin = dp(40);
+        pane.addView(divider, dl);
+
+        mPreviewTitle = new TextView(getContext());
+        mPreviewTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        mPreviewTitle.setTypeface(Typeface.create("sans-serif", Typeface.BOLD));
+        mPreviewTitle.setTextColor(0xFFF1F1F1);
+        mPreviewTitle.setGravity(Gravity.CENTER_VERTICAL);
+        mPreviewTitle.setSingleLine(true);
+        FrameLayout.LayoutParams tl = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, dp(64));
+        tl.leftMargin = dp(40);
+        tl.topMargin = getResources().getDimensionPixelSize(R.dimen.settings_title_top) - dp(16);
+        pane.addView(mPreviewTitle, tl);
+
+        mPreviewRows = new LinearLayout(getContext());
+        mPreviewRows.setOrientation(LinearLayout.VERTICAL);
+        FrameLayout.LayoutParams rl = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        rl.topMargin = listTop;
+        rl.bottomMargin = dp(40);
+        pane.addView(mPreviewRows, rl);
+
+        mPreviewPane = pane;
+        pane.setVisibility(View.INVISIBLE);
+        return pane;
+    }
+
+    private void requestPreview(SettingsEntry entry) {
+        mPreviewEntry = entry;
+        mHandler.removeCallbacks(mBuildPreview);
+        mHandler.postDelayed(mBuildPreview, 90);
+    }
+
+    private void buildPreview() {
+        SettingsEntry entry = mPreviewEntry;
+        if (entry == null || getContext() == null) {
+            return;
+        }
+
+        // Accounts laadt eerst uit het netwerk en een wachtwoord moet je eerst invoeren: daar het uitlegvak
+        if (entry.item.imageResId == R.drawable.settings_account || getGeneralData().getSettingsPassword() != null) {
+            showDetail(entry);
+            return;
+        }
+
+        AppDialogPresenter dialog = AppDialogPresenter.instance(getContext());
+        if (dialog.isDialogShown()) {
+            return;
+        }
+        final boolean[] captured = {false};
+        dialog.capturePreview((title, categories, isExpandable) -> {
+            captured[0] = true;
+            showPreview(entry, title, categories, isExpandable);
+        });
+        try {
+            entry.item.onClick.run();
+        } catch (Exception e) {
+            // NOP: dan maar het uitlegvak
+        } finally {
+            dialog.capturePreview(null);
+        }
+        if (!captured[0]) {
+            showDetail(entry);
+        }
+    }
+
+    private void showPreview(SettingsEntry entry, CharSequence title, List<OptionCategory> categories, boolean isExpandable) {
+        if (mPreviewPane == null) {
+            return;
+        }
+        if (mDetailPane != null) {
+            mDetailPane.setVisibility(View.INVISIBLE);
+        }
+        mPreviewPane.setVisibility(View.VISIBLE);
+        mPreviewTitle.setText(title != null ? title : entry.item.title);
+        mPreviewRows.removeAllViews();
+
+        if (categories == null) {
+            return;
+        }
+
+        // Eén lijst die direct openklapt: toon de keuzes zelf (met vinkje), anders de onderdelen
+        if (isExpandable && categories.size() == 1 && categories.get(0).options != null
+                && categories.get(0).type != OptionCategory.TYPE_SINGLE_SWITCH && categories.get(0).type != OptionCategory.TYPE_SINGLE_BUTTON) {
+            OptionCategory category = categories.get(0);
+            for (OptionItem option : category.options) {
+                int mark = category.type == OptionCategory.TYPE_RADIO_LIST ? (option.isSelected() ? R.drawable.pref_check_on : 0)
+                        : category.type == OptionCategory.TYPE_CHECKBOX_LIST ? (option.isSelected() ? R.drawable.pref_box_on : R.drawable.pref_box_off) : 0;
+                addPreviewRow(option.getTitle(), mark);
+            }
+            return;
+        }
+
+        for (OptionCategory category : categories) {
+            if (category.options == null) {
+                continue;
+            }
+            if (category.type == OptionCategory.TYPE_SINGLE_SWITCH && !category.options.isEmpty()) {
+                OptionItem option = category.options.get(0);
+                addPreviewRow(option.getTitle(), option.isSelected() ? R.drawable.pref_switch_on : R.drawable.pref_switch_off);
+            } else if (category.type == OptionCategory.TYPE_SINGLE_BUTTON && !category.options.isEmpty()) {
+                addPreviewRow(category.options.get(0).getTitle(), 0);
+            } else {
+                addPreviewRow(category.title, 0);
+            }
+        }
+    }
+
+    private void addPreviewRow(CharSequence text, int markResId) {
+        LinearLayout row = new LinearLayout(getContext());
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        row.setPadding(dp(30), 0, dp(40), 0);
+
+        TextView label = new TextView(getContext());
+        label.setText(text);
+        label.setSingleLine(true);
+        label.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        label.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
+        label.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
+        label.setTextColor(0xFFF1F1F1);
+        row.addView(label, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+
+        if (markResId != 0) {
+            ImageView mark = new ImageView(getContext());
+            mark.setImageResource(markResId);
+            boolean isSwitch = markResId == R.drawable.pref_switch_on || markResId == R.drawable.pref_switch_off;
+            LinearLayout.LayoutParams ml = new LinearLayout.LayoutParams(dp(isSwitch ? 38 : 24), dp(24));
+            ml.leftMargin = dp(16);
+            row.addView(mark, ml);
+        }
+
+        mPreviewRows.addView(row, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(52)));
+    }
+
     private void showDetail(SettingsEntry entry) {
+        if (mPreviewPane != null) {
+            mPreviewPane.setVisibility(View.INVISIBLE);
+        }
         if (mDetailPane == null) {
             mPendingDetail = entry;
             return;
@@ -234,8 +420,7 @@ public class SettingsGridFragment extends GridFragment implements SettingsSectio
     private void requestInlineDialog() {
         VerticalGridView grid = getBrowseGrid();
         int left = grid != null ? grid.getPaddingLeft() : dp(78);
-        com.liskovsoft.smartyoutubetv2.tv.ui.dialogs.AppDialogFragment.requestInline(
-                left + getResources().getDimensionPixelSize(R.dimen.settings_row_width) + dp(24));
+        com.liskovsoft.smartyoutubetv2.tv.ui.dialogs.AppDialogFragment.requestInline(previewLeft(left));
     }
 
     private int dp(int value) {
@@ -341,7 +526,7 @@ public class SettingsGridFragment extends GridFragment implements SettingsSectio
             if (getBrowseGrid() != null) {
                 getBrowseGrid().setSelectedPosition(firstEntry);
             }
-            showDetail((SettingsEntry) mSettingsAdapter.get(firstEntry));
+            requestPreview((SettingsEntry) mSettingsAdapter.get(firstEntry));
         }
     }
 
