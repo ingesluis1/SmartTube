@@ -142,8 +142,25 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         // Will display as follows:
         // play/pause, previous, rewind, fast forward, next
         //   > /||      |<        <<        >>         >|
-        // MOD (Inge): vorige / play-pauze / volgende staan in de onderste rij (zie onCreateSecondaryActions),
-        // zodat er net als in de YouTube-app één knoppenrij onder de voortgangsbalk staat.
+        // MOD (Inge): linker groep zoals YouTube: kanaal (avatar), beschrijving, abonneren, dan vorige / pauze / volgende
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_OPEN_CHANNEL)) {
+            adapter.add(mActions.get(R.id.action_channel));
+        }
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_INFO)) {
+            adapter.add(mActions.get(R.id.action_info));
+        }
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_SUBSCRIBE)) {
+            adapter.add(mActions.get(R.id.action_subscribe));
+        }
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PREVIOUS)) {
+            adapter.add(mSkipPreviousAction);
+        }
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PLAY_PAUSE)) {
+            adapter.add(getPlayPauseAction());
+        }
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_NEXT)) {
+            adapter.add(mSkipNextAction);
+        }
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_REPEAT_MODE)) {
             adapter.add(mActions.get(R.id.action_repeat));
         }
@@ -187,33 +204,20 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         // Does nothing
         super.onCreateSecondaryActions(adapter);
 
-        // MOD (Inge): afspeelknoppen vooraan in de onderste rij
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PREVIOUS)) {
-            adapter.add(mSkipPreviousAction);
-        }
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PLAY_PAUSE)) {
-            adapter.add(getPlayPauseAction());
-        }
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_NEXT)) {
-            adapter.add(mSkipNextAction);
-        }
 
         // MAX: 7 items. But with custom modification it supports more.
         // Origin: {@link androidx.leanback.widget.ControlBarPresenter#MAX_CONTROLS}
         // Custom mod: {@link com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.playerglue.ControlBarPresenter#MAX_CONTROLS}
 
-        // MOD (Inge): volgorde zoals de YouTube-app: like, dislike, abonneren, kanaal, opslaan, ondertitels, kwaliteit, reacties, info
+        // MOD (Inge): rechter groep zoals YouTube: like, dislike, reacties, opslaan, ondertitels, kwaliteit
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_LIKE)) {
             adapter.add(mActions.get(R.id.action_thumbs_up));
         }
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_DISLIKE)) {
             adapter.add(mActions.get(R.id.action_thumbs_down));
         }
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_SUBSCRIBE)) {
-            adapter.add(mActions.get(R.id.action_subscribe));
-        }
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_OPEN_CHANNEL)) {
-            adapter.add(mActions.get(R.id.action_channel));
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_CHAT)) {
+            adapter.add(mActions.get(R.id.action_chat));
         }
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_ADD_TO_PLAYLIST)) {
             adapter.add(mActions.get(R.id.action_playlist_add));
@@ -223,12 +227,6 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         }
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_HIGH_QUALITY)) {
             adapter.add(mActions.get(R.id.lb_control_high_quality));
-        }
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_CHAT)) {
-            adapter.add(mActions.get(R.id.action_chat));
-        }
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_INFO)) {
-            adapter.add(mActions.get(R.id.action_info));
         }
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PLAYBACK_QUEUE)) {
             adapter.add(mActions.get(R.id.action_playback_queue));

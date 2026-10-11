@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MOD (Inge): de pauze/afspeelknop is altijd een witte cirkel, zoals de YouTube-app -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <solid android:color="#F1F1F1" />
+    <size android:width="@dimen/lb_control_button_secondary_diameter" android:height="@dimen/lb_control_button_secondary_diameter" />
+</shape>

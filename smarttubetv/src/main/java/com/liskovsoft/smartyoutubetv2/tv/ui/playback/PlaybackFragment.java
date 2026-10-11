@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 
@@ -841,6 +842,7 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
             mPlayerGlue.setTitle(video.getTitleFull() != null ? video.getTitleFull() : "...");
             mPlayerGlue.setSubtitle(video.getSecondTitleFull() != null ? createSubtitle(video) : "...");
             mPlayerGlue.setVideo(video);
+            updateTitleOverlay(video); // MOD (Inge)
         }
     }
 
@@ -852,6 +854,31 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     @Override
     public void showBackgroundColor(int colorResId) {
         mBackgroundManager.showBackgroundColor(colorResId);
+    }
+
+    // MOD (Inge): titel en kanaalregel linksboven (de beschrijving boven de balk is verborgen)
+    private void updateTitleOverlay(Video video) {
+        if (getView() == null || video == null) {
+            return;
+        }
+        TextView title = getView().findViewById(R.id.player_title);
+        TextView subtitle = getView().findViewById(R.id.player_subtitle);
+        if (title != null) {
+            title.setText(video.getTitleFull() != null ? video.getTitleFull() : "");
+        }
+        if (subtitle != null) {
+            subtitle.setText(video.getSecondTitleFull() != null ? video.getSecondTitleFull() : "");
+        }
+    }
+
+    private void setTitleOverlayVisible(boolean visible) {
+        if (getView() == null) {
+            return;
+        }
+        View overlay = getView().findViewById(R.id.player_title_overlay);
+        if (overlay != null) {
+            overlay.setVisibility(visible ? View.VISIBLE : View.GONE);
+        }
     }
 
     private CharSequence createSubtitle(Video video) {
@@ -1234,6 +1261,8 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
         updatePlayerBackground();
 
+        setTitleOverlayVisible(true); // MOD (Inge)
+
         if (mPlayerGlue != null) {
             mPlayerGlue.setControlsVisibility(true);
         }
@@ -1253,6 +1282,8 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         if (mIsControlsShownPreviously != null && !mIsControlsShownPreviously) {
             return;
         }
+
+        setTitleOverlayVisible(false); // MOD (Inge)
 
         if (mPlayerGlue != null) {
             mPlayerGlue.setControlsVisibility(false);

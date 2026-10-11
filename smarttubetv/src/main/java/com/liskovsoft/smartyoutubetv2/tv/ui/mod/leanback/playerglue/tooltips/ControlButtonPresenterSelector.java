@@ -74,6 +74,8 @@ public class ControlButtonPresenterSelector extends PresenterSelector {
         ImageView mIcon;
         TextView mLabel;
         View mFocusableView;
+        Action mAction; // MOD (Inge)
+        boolean mAlwaysWhite; // MOD (Inge): pauze/afspelen
 
         public ActionViewHolder(View view) {
             super(view);
@@ -95,7 +97,23 @@ public class ControlButtonPresenterSelector extends PresenterSelector {
         public ViewHolder onCreateViewHolder(ViewGroup parent) {
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(mLayoutResourceId, parent, false);
-            return new ActionViewHolder(v);
+            ActionViewHolder vh = new ActionViewHolder(v);
+            // MOD (Inge): zwart icoon op de witte cirkel bij focus (kanaal-avatar blijft in kleur)
+            vh.mFocusableView.setOnFocusChangeListener((view, hasFocus) -> applyIconTint(vh, hasFocus));
+            vh.view.setOnFocusChangeListener((view, hasFocus) -> applyIconTint(vh, hasFocus));
+            return vh;
+        }
+
+        private static void applyIconTint(ActionViewHolder vh, boolean hasFocus) {
+            boolean isAvatar = vh.mAction instanceof com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.ChannelAction
+                    && vh.mAction.getIcon() != null
+                    && !(vh.mAction.getIcon() instanceof android.graphics.drawable.VectorDrawable)
+                    && !(vh.mAction.getIcon() instanceof androidx.vectordrawable.graphics.drawable.VectorDrawableCompat);
+            if ((hasFocus || vh.mAlwaysWhite) && !isAvatar) {
+                vh.mIcon.setColorFilter(0xFF0F0F0F);
+            } else {
+                vh.mIcon.clearColorFilter();
+            }
         }
 
         // Used inside: com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.playerglue.tweaks.ControlBarPresenter.ViewHolder.bindControlToAction()
@@ -104,8 +122,17 @@ public class ControlButtonPresenterSelector extends PresenterSelector {
         public void onBindViewHolder(ViewHolder viewHolder, Object item) {
             Action action = (Action) item;
             ActionViewHolder vh = (ActionViewHolder) viewHolder;
+            vh.mAction = action;
+            vh.mAlwaysWhite = action instanceof androidx.leanback.widget.PlaybackControlsRow.PlayPauseAction;
+            if (vh.mFocusableView instanceof ImageView) {
+                ((ImageView) vh.mFocusableView).setImageResource(vh.mAlwaysWhite
+                        ? com.liskovsoft.smartyoutubetv2.tv.R.drawable.control_button_play_bg
+                        : (mLayoutResourceId == R.layout.lb_control_button_primary
+                            ? R.drawable.lb_control_button_primary : R.drawable.lb_control_button_secondary));
+            }
 
             vh.mIcon.setImageDrawable(action.getIcon());
+            applyIconTint(vh, vh.view.hasFocus() || vh.mFocusableView.hasFocus());
             if (action instanceof PaddingAction) {
                 int padding = ((PaddingAction) action).getPadding();
                 if (padding > 0) {

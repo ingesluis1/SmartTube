@@ -58,7 +58,15 @@
     <dimen name="lb_search_bar_items_width">600dp</dimen>
 
     <!-- Increase player time text size -->
-    <dimen name="lb_playback_controls_time_text_size">16sp</dimen>
+    <dimen name="lb_playback_controls_time_text_size">15sp</dimen>
+    <!-- MOD (Inge): knopformaten speler zoals YouTube: pauze 56dp, overige 48dp, iconen 24dp -->
+    <dimen name="lb_control_button_diameter">56dp</dimen>
+    <dimen name="lb_control_button_height">56dp</dimen>
+    <dimen name="lb_control_button_secondary_diameter">48dp</dimen>
+    <dimen name="lb_control_button_secondary_height">48dp</dimen>
+    <dimen name="lb_control_icon_width">26dp</dimen>
+    <dimen name="lb_control_icon_height">26dp</dimen>
+    <dimen name="lb_playback_transport_control_row_padding_bottom">28dp</dimen>
 
     <!-- MOD (Inge): navigatiestrook links; inhoud en bovenbalk beginnen rechts ervan -->
     <dimen name="nav_strip_width">72dp</dimen>

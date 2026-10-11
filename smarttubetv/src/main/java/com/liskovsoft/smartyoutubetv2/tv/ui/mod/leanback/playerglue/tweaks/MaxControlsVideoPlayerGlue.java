@@ -93,6 +93,9 @@ public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
                 mTransportViewHolder = new WeakReference<>(viewHolder);
 
                 viewHolder.setTopEdgeFocusListener(MaxControlsVideoPlayerGlue.this);
+                // MOD (Inge): beschrijving boven de balk verbergen; de titel staat linksboven als overlay
+                viewHolder.mDescriptionDock.setVisibility(View.GONE);
+                viewHolder.mImageView.setVisibility(View.GONE);
                 viewHolder.setQualityInfo(mQualityInfo);
                 viewHolder.setDateVisibility(isControlsVisible());
                 // Don't uncomment
