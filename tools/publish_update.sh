@@ -8,26 +8,28 @@
 #   1. versionCode +1 (en versionName laatste cijfer +1) in smarttubetv/build.gradle
 #   2. release bouwen (ondertekend met de eigen sleutel)
 #   3. apk's + stable.json klaarzetten in build/update-site/smarttube/
-#   4. uploaden naar de Stacklines-server (~/smarttube-updates/site/smarttube/)
-#   5. deelmap Downloads\SmartTube_Inge bijwerken
+#   4. publiceren als GitHub Release in ingesluis1/SmartTube-Inge (gh CLI)
+#   5. deelmap Downloads/SmartTube_Inge bijwerken
+#
+# De app kijkt bij elke start naar:
+#   https://github.com/ingesluis1/SmartTube-Inge/releases/latest/download/stable.json
 #
 # Opties via omgevingsvariabelen:
-#   NO_BUMP=1        versienummer niet ophogen (opnieuw publiceren van dezelfde versie)
-#   NO_UPLOAD=1      alleen lokaal klaarzetten, niet naar de server sturen
+#   NO_BUMP=1        versienummer niet ophogen
+#   NO_UPLOAD=1      alleen lokaal klaarzetten, niet publiceren
 #   NO_SHARE=1       deelmap Downloads/SmartTube_Inge niet bijwerken
-#   BASE_URL=...     downloadadres in stable.json (standaard https://updates.stacklines.nl/smarttube)
+#   BASE_URL=...     downloadadres in stable.json (standaard de GitHub Release van deze versie)
+#   REPO=...         GitHub-repository (standaard ingesluis1/SmartTube-Inge)
 set -e
 cd "$(dirname "$0")/.."
 
 if [ $# -lt 1 ]; then
-    echo "Geef minstens één regel 'wat is er nieuw' mee, bv: tools/publish_update.sh \"Nieuw profielscherm\""
+    echo "Geef minstens één regel 'wat is er nieuw' mee, bv: tools/publish_update.sh \"Nieuw zoekscherm\""
     exit 1
 fi
 
 GRADLE=smarttubetv/build.gradle
-BASE_URL="${BASE_URL:-https://updates.stacklines.nl/smarttube}"
-SERVER="${SERVER:-inge009@192.168.1.177}"
-REMOTE_DIR="${REMOTE_DIR:-smarttube-updates/site/smarttube}"
+REPO="${REPO:-ingesluis1/SmartTube-Inge}"
 
 if [ -z "$NO_BUMP" ]; then
     python -I - "$GRADLE" <<'EOF'
@@ -46,8 +48,10 @@ print("Nieuwe versie: %s (%d)" % (name2, code))
 EOF
 fi
 
-VERSION_CODE=$(grep -m1 -o "versionCode [0-9]*" "$GRADLE" | awk '{print $2}')
-VERSION_NAME=$(grep -m1 -o 'versionName "[^"]*"' "$GRADLE" | sed 's/versionName "\(.*\)"/\1/')
+VERSION_CODE=$(python -I -c "import re,sys;print(re.search(r'versionCode (\d+)',open(sys.argv[1]).read()).group(1))" "$GRADLE")
+VERSION_NAME=$(python -I -c "import re,sys;print(re.search(r'versionName \"([^\"]+)\"',open(sys.argv[1]).read()).group(1))" "$GRADLE")
+TAG="v${VERSION_NAME}"
+BASE_URL="${BASE_URL:-https://github.com/${REPO}/releases/download/${TAG}}"
 
 export JAVA_HOME="${JAVA_HOME:-C:/Users/Gebruiker/AndroidStudioProjects/tools/jdk-17.0.20.1+1}"
 echo "Bouwen van $VERSION_NAME ($VERSION_CODE)..."
@@ -76,7 +80,7 @@ manifest = {
     name: {"versionCode": code, "changelog": changelog, "changelog_nl": changelog},
 }
 open("%s/stable.json" % site, "w", encoding="utf-8").write(json.dumps(manifest, indent=2, ensure_ascii=False))
-print(json.dumps(manifest, indent=2, ensure_ascii=False))
+print("stable.json: versie %s (%d), %d regel(s) changelog" % (name, code, len(changelog)))
 EOF
 
 SHARE="/c/Users/Gebruiker/Downloads/SmartTube_Inge"
@@ -88,14 +92,11 @@ if [ -d "$SHARE" ] && [ -z "$NO_SHARE" ]; then
 fi
 
 if [ -z "$NO_UPLOAD" ]; then
-    echo "Uploaden naar $SERVER:~/$REMOTE_DIR ..."
-    ssh -o ConnectTimeout=10 "$SERVER" "mkdir -p ~/$REMOTE_DIR"
-    # eerst de apk's, als laatste de json (zodat niemand een json ziet zonder apk)
-    scp -q "$SITE"/*.apk "$SERVER:~/$REMOTE_DIR/"
-    scp -q "$SITE/stable.json" "$SERVER:~/$REMOTE_DIR/stable.json"
-    # oude apk's opruimen (alleen de laatste versie bewaren)
-    ssh "$SERVER" "cd ~/$REMOTE_DIR && ls smarttube_*.apk | grep -v '_${VERSION_CODE}_' | xargs -r rm -f"
+    echo "Publiceren als GitHub Release ${TAG} in ${REPO} ..."
+    NOTES=$(printf -- "- %s\n" "$@")
+    gh release create "$TAG" "$SITE"/*.apk "$SITE/stable.json" \
+        --repo "$REPO" --title "SmartTube Inge ${VERSION_NAME}" --notes "$NOTES" --latest
     echo "Gepubliceerd: $VERSION_NAME ($VERSION_CODE). Tv's krijgen de update bij de volgende start van de app."
 else
-    echo "Klaargezet in $SITE (niet geüpload)."
+    echo "Klaargezet in $SITE (niet gepubliceerd)."
 fi
