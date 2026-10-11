@@ -786,7 +786,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
 
         int yellowOnSemiBgSubIdx = 4;
         mOKButtonBehavior = Helpers.parseInt(split, 0, OK_ONLY_UI);
-        mUiHideTimeoutSec = Helpers.parseInt(split, 1, 3);
+        mUiHideTimeoutSec = Helpers.parseInt(split, 1, 6); // MOD (Inge): balk langer zichtbaar (was 3 s)
         // mIsAbsoluteDateEnabled
         mSeekPreviewMode = Helpers.parseInt(split, 3, SEEK_PREVIEW_SINGLE);
         mIsSeekConfirmPauseEnabled = Helpers.parseBoolean(split, 4, false);

@@ -127,7 +127,7 @@ public class ControlButtonPresenterSelector extends PresenterSelector {
                     && vh.mAction.getIcon() != null
                     && !(vh.mAction.getIcon() instanceof android.graphics.drawable.VectorDrawable)
                     && !(vh.mAction.getIcon() instanceof androidx.vectordrawable.graphics.drawable.VectorDrawableCompat);
-            if ((hasFocus || vh.mAlwaysWhite) && !isAvatar) {
+            if (hasFocus && !isAvatar) {
                 vh.mIcon.setColorFilter(0xFF0F0F0F);
             } else {
                 vh.mIcon.clearColorFilter();
