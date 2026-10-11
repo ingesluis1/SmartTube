@@ -46,6 +46,21 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
     private final Runnable mRestoreTask = this::restorePosition;
 
     @Override
+    public void onViewCreated(android.view.View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // MOD (Inge): Shorts-tegels zijn hoog; uitlijnen op de bovenkant zodat de eerste rij (ook met open menu)
+        // onder de zoekbalk begint i.p.v. erachter
+        if (isShorts() && getBrowseGrid() != null) {
+            androidx.leanback.widget.VerticalGridView grid = getBrowseGrid();
+            grid.setItemAlignmentOffset(0);
+            grid.setItemAlignmentOffsetPercent(0f);
+            grid.setWindowAlignment(androidx.leanback.widget.VerticalGridView.WINDOW_ALIGN_LOW_EDGE);
+            grid.setWindowAlignmentOffset(grid.getPaddingTop());
+            grid.setWindowAlignmentOffsetPercent(androidx.leanback.widget.VerticalGridView.WINDOW_ALIGN_OFFSET_PERCENT_DISABLED);
+        }
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
