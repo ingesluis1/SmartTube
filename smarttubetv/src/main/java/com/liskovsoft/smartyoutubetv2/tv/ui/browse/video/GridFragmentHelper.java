@@ -117,8 +117,9 @@ public class GridFragmentHelper {
         int colsNumRounded = (int) colsNum;
         float colsReminder = (colsNum - colsNumRounded) / colsNumRounded;
 
-        float width = cardWidthPx + cardWidthPx * colsReminder;
-        float height = cardHeightPx + cardHeightPx * colsReminder;
+        // MOD (Inge): niet oprekken tot hele kolommen; YouTube laat bewust een deel van de volgende kaart zien
+        float width = cardWidthPx;
+        float height = cardHeightPx;
 
         if (isSingleColumn) { // single column grids have a huge margin
             width -= res.getDimensionPixelSize(R.dimen.grid_horizontal_margin);

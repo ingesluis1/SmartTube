@@ -120,6 +120,16 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
     PlaybackControlsRow mControlsRow;
     PlaybackRowPresenter mControlsRowPresenter;
     PlaybackControlsRow.PlayPauseAction mPlayPauseAction;
+
+    /**
+     * MOD (Inge): de play/pauze-knop ook buiten dit pakket bereikbaar maken, zodat hij in de onderste rij kan staan.
+     */
+    protected PlaybackControlsRow.PlayPauseAction getPlayPauseAction() {
+        if (mPlayPauseAction == null) {
+            mPlayPauseAction = new PlaybackControlsRow.PlayPauseAction(getContext());
+        }
+        return mPlayPauseAction;
+    }
     boolean mIsPlaying = false;
     boolean mFadeWhenPlaying = true;
 

@@ -3,6 +3,8 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.widgets.complexcardview;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Outline;
+import android.graphics.drawable.Drawable;
+import androidx.core.graphics.drawable.DrawableCompat;
 import android.os.Build.VERSION;
 import android.view.ViewOutlineProvider;
 import androidx.core.content.ContextCompat;
@@ -128,7 +130,15 @@ public class ComplexImageView extends RelativeLayout {
             return;
         }
 
-        mBadgeText.setBackgroundColor(color);
+        // MOD (Inge): de pilvorm behouden en alleen de kleur zetten (zwart wordt halfdoorzichtig zwart)
+        Drawable background = mBadgeText.getBackground();
+        if (background == null) {
+            mBadgeText.setBackgroundColor(color);
+            return;
+        }
+        Drawable tinted = DrawableCompat.wrap(background).mutate();
+        DrawableCompat.setTint(tinted, color == Color.BLACK ? 0xB3000000 : color);
+        mBadgeText.setBackground(tinted);
     }
 
     /**

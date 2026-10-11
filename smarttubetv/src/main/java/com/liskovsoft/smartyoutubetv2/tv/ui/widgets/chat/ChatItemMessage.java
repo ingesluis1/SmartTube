@@ -75,7 +75,7 @@ public class ChatItemMessage implements IMessage {
         return message;
     }
 
-    private static final int META_COLOR = 0xFFAAAAAA;
+    private static final int META_COLOR = 0xFF9A9A9A;
     private static final float META_SIZE = 0.87f;
 
     private static void appendMeta(SpannableStringBuilder builder, CharSequence text) {

@@ -794,6 +794,12 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
             // Restore the padding (API 19 fix)
             bubble.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
 
+            // MOD (Inge): tekstkleur omkeren op de kaart met focus (wit vlak, donkere tekst)
+            TextView text = v.findViewById(R.id.messageText);
+            if (text != null) {
+                text.setTextColor(hasFocus ? messagesListStyle.getIncomingTextFocusedColor() : messagesListStyle.getIncomingTextColor());
+            }
+
             if (hasFocus) {
                 notifyMessageViewFocused(v, wrapper.item);
             }

@@ -139,8 +139,7 @@ public class ComplexImageCardView extends ImageCardView {
             return;
         }
 
-        titleView.setMaxLines(lines);
-        titleView.setLines(lines);
+        titleView.setMaxLines(lines); // MOD (Inge): geen vaste hoogte, korte titels laten geen gat
     }
 
     public void setContentLinesNum(int lines) {
@@ -150,8 +149,7 @@ public class ComplexImageCardView extends ImageCardView {
             return;
         }
 
-        contentView.setMaxLines(lines);
-        contentView.setLines(lines);
+        contentView.setMaxLines(lines); // MOD (Inge)
     }
 
     public void enableBadge(boolean enabled) {

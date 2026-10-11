@@ -319,8 +319,13 @@ public class PlaybackTransportControlGlue<T extends PlayerAdapter>
                     : PlaybackControlsRow.PlayPauseAction.INDEX_PAUSE;
             if (mPlayPauseAction.getIndex() != index) {
                 mPlayPauseAction.setIndex(index);
+                // MOD (Inge): de knop kan in de bovenste of de onderste rij staan
                 notifyItemChanged((ArrayObjectAdapter) getControlsRow().getPrimaryActionsAdapter(),
                         mPlayPauseAction);
+                if (getControlsRow().getSecondaryActionsAdapter() instanceof ArrayObjectAdapter) {
+                    notifyItemChanged((ArrayObjectAdapter) getControlsRow().getSecondaryActionsAdapter(),
+                            mPlayPauseAction);
+                }
             }
         }
     }

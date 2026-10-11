@@ -80,6 +80,8 @@
         <attr name="incomingBubblePaddingBottom" format="dimension|reference" />
 
         <attr name="incomingTextColor" format="color|reference" />
+        <!-- MOD (Inge): tekstkleur van de reactie die focus heeft -->
+        <attr name="incomingTextFocusedColor" format="color|reference" />
         <attr name="incomingTextSize" format="dimension|reference" />
         <attr name="incomingTextStyle">
             <flag name="normal" value="0" />

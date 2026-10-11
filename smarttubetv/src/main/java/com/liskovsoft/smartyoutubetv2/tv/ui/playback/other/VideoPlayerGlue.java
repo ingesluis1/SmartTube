@@ -142,18 +142,8 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         // Will display as follows:
         // play/pause, previous, rewind, fast forward, next
         //   > /||      |<        <<        >>         >|
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PLAY_PAUSE)) {
-            super.onCreatePrimaryActions(adapter);
-        }
-
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PREVIOUS)) {
-            adapter.add(mSkipPreviousAction);
-        }
-        //adapter.add(mRewindAction);
-        //adapter.add(mFastForwardAction);
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_NEXT)) {
-            adapter.add(mSkipNextAction);
-        }
+        // MOD (Inge): vorige / play-pauze / volgende staan in de onderste rij (zie onCreateSecondaryActions),
+        // zodat er net als in de YouTube-app één knoppenrij onder de voortgangsbalk staat.
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_REPEAT_MODE)) {
             adapter.add(mActions.get(R.id.action_repeat));
         }
@@ -196,6 +186,17 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
     protected void onCreateSecondaryActions(ArrayObjectAdapter adapter) {
         // Does nothing
         super.onCreateSecondaryActions(adapter);
+
+        // MOD (Inge): afspeelknoppen vooraan in de onderste rij
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PREVIOUS)) {
+            adapter.add(mSkipPreviousAction);
+        }
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PLAY_PAUSE)) {
+            adapter.add(getPlayPauseAction());
+        }
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_NEXT)) {
+            adapter.add(mSkipNextAction);
+        }
 
         // MAX: 7 items. But with custom modification it supports more.
         // Origin: {@link androidx.leanback.widget.ControlBarPresenter#MAX_CONTROLS}

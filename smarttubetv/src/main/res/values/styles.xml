@@ -26,20 +26,21 @@
 
     <!-- MOD (Inge): kaarten in YouTube-stijl: tekst los onder de thumbnail, gewone letter -->
     <style name="App.ImageCardView.TitleStyle" parent="Widget.Leanback.ImageCardView.TitleStyle">
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/card_title_text</item>
-        <item name="android:lineSpacingExtra">2sp</item>
-        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:lineSpacingExtra">3sp</item>
+        <item name="android:layout_marginBottom">4dp</item>
     </style>
     <style name="App.ImageCardView.ContentStyle" parent="Widget.Leanback.ImageCardView.ContentStyle">
         <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/card_content_text</item>
+        <item name="android:lineSpacingExtra">3sp</item>
     </style>
     <style name="App.ImageCardView.InfoAreaStyle" parent="Widget.Leanback.ImageCardView.InfoAreaStyle">
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">8dp</item>
         <item name="android:paddingStart">4dp</item>
         <item name="android:paddingEnd">4dp</item>
         <item name="android:background">@android:color/transparent</item>
@@ -49,14 +50,14 @@
     <style name="TextAppearance.Leanback.DetailsDescriptionTitle">
         <item name="android:textSize">@dimen/lb_details_description_title_text_size</item>
         <item name="android:textColor">@color/lb_details_description_color</item>
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <!-- MOD (Inge): rijkoppen in gewone letter -->
     <style name="TextAppearance.Leanback.Header" parent="TextAppearance.Leanback">
         <item name="android:textSize">@dimen/lb_browse_header_text_size</item>
         <item name="android:textColor">@color/lb_browse_header_color</item>
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <!-- Color scheme: Teal (Default) -->

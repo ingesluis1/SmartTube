@@ -59,6 +59,7 @@ class MessagesListStyle extends Style {
     private int incomingDefaultBubblePaddingBottom;
 
     private int incomingTextColor;
+    private int incomingTextFocusedColor;
     private int incomingTextSize;
     private int incomingTextStyle;
 
@@ -146,6 +147,8 @@ class MessagesListStyle extends Style {
                 style.getDimension(R.dimen.message_padding_bottom));
         style.incomingTextColor = typedArray.getColor(R.styleable.MessagesList_incomingTextColor,
                 style.getColor(R.color.dark_grey_two));
+        style.incomingTextFocusedColor = typedArray.getColor(R.styleable.MessagesList_incomingTextFocusedColor,
+                style.incomingTextColor);
         style.incomingTextSize = typedArray.getDimensionPixelSize(R.styleable.MessagesList_incomingTextSize,
                 style.getDimension(R.dimen.message_text_size));
         style.incomingTextStyle = typedArray.getInt(R.styleable.MessagesList_incomingTextStyle, Typeface.NORMAL);
@@ -279,6 +282,10 @@ class MessagesListStyle extends Style {
 
     protected int getIncomingTextColor() {
         return incomingTextColor;
+    }
+
+    protected int getIncomingTextFocusedColor() {
+        return incomingTextFocusedColor;
     }
 
     protected int getIncomingTextSize() {

@@ -106,7 +106,7 @@ public class CommentsController extends BasePlayerController {
                     }
                 };
 
-                showDialog(nestedReceiver, title);
+                showDialog(nestedReceiver, getContext().getString(R.string.comments_title)); // MOD (Inge)
             }
 
             @Override
@@ -123,7 +123,7 @@ public class CommentsController extends BasePlayerController {
             }
         };
 
-        showDialog(commentsReceiver, title);
+        showDialog(commentsReceiver, getContext().getString(R.string.comments_title)); // MOD (Inge)
     }
 
     @Override

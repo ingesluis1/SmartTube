@@ -23,6 +23,10 @@
     <color name="comments_bg">#303030</color>
     <!-- MOD (Inge): subtiele focusmarkering van een reactie -->
     <color name="comments_bg_focused">#2EFFFFFF</color>
+    <color name="comments_panel_bg">#0F0F0F</color>
+    <color name="comments_card">#272727</color>
+    <color name="comments_card_focused">#F1F1F1</color>
+    <color name="comments_text_focused">#0F0F0F</color>
     <!-- Focused comment color. Default: #17C2DCF2 -->
     <color name="comments_bg_pressed">#27C2DCF2</color>
     <color name="semi_grey">#64282828</color>

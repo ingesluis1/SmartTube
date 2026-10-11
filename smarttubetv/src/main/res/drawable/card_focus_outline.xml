@@ -4,7 +4,7 @@
     <item android:state_selected="true">
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/lb_rounded_rect_corner_radius" />
-            <stroke android:width="3dp" android:color="@color/card_focus_outline" />
+            <stroke android:width="4dp" android:color="@color/card_focus_outline" />
         </shape>
     </item>
     <item>

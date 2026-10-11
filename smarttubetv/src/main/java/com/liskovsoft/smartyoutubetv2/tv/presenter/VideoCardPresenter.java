@@ -122,7 +122,7 @@ public class VideoCardPresenter extends LongClickPresenter {
         Context context = cardView.getContext();
 
         cardView.setTitleText(video.getTitle());
-        cardView.setContentText(video.getSecondTitle());
+        cardView.setContentText(splitSecondTitle(video.getSecondTitle())); // MOD (Inge)
         // Count progress that very close to zero. E.g. when user closed video immediately.
         cardView.setProgress(video.percentWatched > 0 && video.percentWatched < 1 ? 1 : Math.round(video.percentWatched));
         cardView.setBadgeText(
@@ -181,6 +181,23 @@ public class VideoCardPresenter extends LongClickPresenter {
 
         // Cleanup Glide resources. https://chatgpt.com/share/682120c5-e428-8010-b848-371b2dec0cd5
         Glide.with(cardView.getContext().getApplicationContext()).clear(cardView.getMainImageView());
+    }
+
+    /**
+     * MOD (Inge): YouTube zet de kanaalnaam op een eigen regel en daaronder "weergaven • leeftijd".
+     * SmartTube levert "kanaal • weergaven • leeftijd" als één regel; de eerste scheiding wordt een regeleinde.
+     */
+    private static CharSequence splitSecondTitle(CharSequence secondTitle) {
+        if (secondTitle == null) {
+            return null;
+        }
+        String delim = " " + Video.TERTIARY_TEXT_DELIM + " ";
+        String text = secondTitle.toString();
+        int idx = text.indexOf(delim);
+        if (idx <= 0) {
+            return secondTitle;
+        }
+        return text.substring(0, idx) + "\n" + text.substring(idx + delim.length());
     }
 
     private void updateDimensions(Context context) {
