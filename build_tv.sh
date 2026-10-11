@@ -4,8 +4,8 @@
 set -e
 cd "$(dirname "$0")"
 export JAVA_HOME="C:/Users/Gebruiker/AndroidStudioProjects/tools/jdk-17.0.20.1+1"
-./gradlew assembleStstableDebug -q
-APK=$(ls smarttubetv/build/outputs/apk/ststable/debug/*_universal.apk | head -1)
+./gradlew assembleStstableRelease -q
+APK=$(ls smarttubetv/build/outputs/apk/ststable/release/*_universal.apk | head -1)
 DIST="C:/Users/Gebruiker/AndroidStudioProjects/TvKanalen/dist"
 cp "$APK" "$DIST/smarttube.apk.tmp" && mv "$DIST/smarttube.apk.tmp" "$DIST/smarttube.apk"
 ls -l "$DIST/smarttube.apk"
