@@ -104,6 +104,24 @@ public class ControlButtonPresenterSelector extends PresenterSelector {
             return vh;
         }
 
+        private static class TintFocusListener implements View.OnFocusChangeListener {
+            private final ActionViewHolder mVh;
+            private final View.OnFocusChangeListener mInner;
+
+            TintFocusListener(ActionViewHolder vh, View.OnFocusChangeListener inner) {
+                mVh = vh;
+                mInner = inner;
+            }
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (mInner != null) {
+                    mInner.onFocusChange(v, hasFocus);
+                }
+                applyIconTint(mVh, hasFocus);
+            }
+        }
+
         private static void applyIconTint(ActionViewHolder vh, boolean hasFocus) {
             boolean isAvatar = vh.mAction instanceof com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.ChannelAction
                     && vh.mAction.getIcon() != null
@@ -157,6 +175,11 @@ public class ControlButtonPresenterSelector extends PresenterSelector {
                 if (tooltipsEnabled) {
                     TooltipCompatHandler.setTooltipText(vh.mFocusableView, action.getLabel1());
                 }
+            }
+            // MOD (Inge): de tooltip-handler vervangt de focus-listener; onze kleurwissel eraan vastknopen
+            View.OnFocusChangeListener existing = vh.mFocusableView.getOnFocusChangeListener();
+            if (!(existing instanceof TintFocusListener)) {
+                vh.mFocusableView.setOnFocusChangeListener(new TintFocusListener(vh, existing));
             }
         }
 
