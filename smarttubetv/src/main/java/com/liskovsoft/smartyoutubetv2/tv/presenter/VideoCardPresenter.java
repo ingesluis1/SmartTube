@@ -131,8 +131,9 @@ public class VideoCardPresenter extends LongClickPresenter {
                 video.isShorts ? context.getString(R.string.header_shorts).toUpperCase() :
                 video.badge
         );
+        // MOD (Inge): LIVE/NEW/UPCOMING-label in de accentkleur
         cardView.setBadgeColor(video.hasNewContent || video.isLive || video.isUpcoming ?
-                ContextCompat.getColor(context, R.color.dark_red) : ContextCompat.getColor(context, R.color.black));
+                com.liskovsoft.smartyoutubetv2.common.prefs.AccentColor.get(context) : ContextCompat.getColor(context, R.color.black));
 
         if (mCardPreviewType != MainUIData.CARD_PREVIEW_DISABLED) {
             cardView.setPreview(video);

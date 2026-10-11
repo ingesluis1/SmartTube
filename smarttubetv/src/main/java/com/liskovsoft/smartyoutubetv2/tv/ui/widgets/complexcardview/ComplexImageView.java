@@ -131,6 +131,9 @@ public class ComplexImageView extends RelativeLayout {
         }
 
         // MOD (Inge): de pilvorm behouden en alleen de kleur zetten (zwart wordt halfdoorzichtig zwart)
+        // Lichte accentkleur (wit/geel): donkere tekst, anders is het label niet te lezen
+        boolean light = color != Color.BLACK && androidx.core.graphics.ColorUtils.calculateLuminance(color) > 0.5;
+        mBadgeText.setTextColor(light ? 0xFF0F0F0F : Color.WHITE);
         Drawable background = mBadgeText.getBackground();
         if (background == null) {
             mBadgeText.setBackgroundColor(color);
