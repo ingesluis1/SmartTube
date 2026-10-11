@@ -59,7 +59,7 @@ public class NavStripView extends LinearLayout {
         setFocusableInTouchMode(false);
         float density = getResources().getDisplayMetrics().density;
         mIconSizePx = Math.round(24 * density);
-        mMaxPitchPx = Math.round(40 * density);
+        mMaxPitchPx = Math.round(39 * density); // YouTube: 39dp tussen de iconen
         mMinPitchPx = Math.round(30 * density);
     }
 
@@ -95,6 +95,7 @@ public class NavStripView extends LinearLayout {
     public void setSelectedId(long id) {
         mSelectedId = id;
         applySelection();
+        requestLayout(); // zichtbaarheid kan veranderen
     }
 
     private void applySelection() {
@@ -108,18 +109,38 @@ public class NavStripView extends LinearLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        // Alle iconen moeten passen: de onderlinge afstand krimpt als er veel secties zijn.
+        // Vaste afstand zoals YouTube (39dp). Passen niet alle secties, dan vallen de middelste weg;
+        // de eerste secties en de laatste (Instellingen) blijven staan, net als de geselecteerde.
         int height = MeasureSpec.getSize(heightMeasureSpec);
         int count = getChildCount();
         if (height > 0 && count > 0) {
             int available = height - getPaddingTop() - getPaddingBottom();
-            int pitch = Math.max(mMinPitchPx, Math.min(mMaxPitchPx, available / count));
+            int maxCount = Math.max(1, available / mMaxPitchPx);
+            int selectedIndex = -1;
             for (int i = 0; i < count; i++) {
                 View child = getChildAt(i);
+                if (child.getTag() instanceof Long && (Long) child.getTag() == mSelectedId) {
+                    selectedIndex = i;
+                }
+            }
+            for (int i = 0; i < count; i++) {
+                boolean visible;
+                if (count <= maxCount) {
+                    visible = true;
+                } else if (i == count - 1) {
+                    visible = true; // laatste (Instellingen)
+                } else if (selectedIndex >= maxCount - 1 && selectedIndex < count - 1) {
+                    // geselecteerde sectie zit in het verborgen deel: toon hem op de plek van de laatste zichtbare
+                    visible = i < maxCount - 2 || i == selectedIndex;
+                } else {
+                    visible = i < maxCount - 1;
+                }
+                View child = getChildAt(i);
+                child.setVisibility(visible ? View.VISIBLE : View.GONE);
                 LayoutParams lp = (LayoutParams) child.getLayoutParams();
-                if (lp.height != pitch) {
-                    lp.height = pitch;
-                    int pad = Math.max(0, (pitch - mIconSizePx) / 2);
+                if (lp.height != mMaxPitchPx) {
+                    lp.height = mMaxPitchPx;
+                    int pad = Math.max(0, (mMaxPitchPx - mIconSizePx) / 2);
                     child.setPadding(0, pad, 0, pad);
                     child.setLayoutParams(lp);
                 }
