@@ -16,6 +16,8 @@ Alle wijzigingen zijn in de code gemarkeerd met `MOD (Inge)`. Werkbranch: `inge-
 
 **Zelf bouwen:** JDK 17, dan `./gradlew assembleStstableDebug`. Voor een release-build heb je een eigen `keystore.properties` met ondertekeningssleutel nodig (staat niet in deze repository).
 
+**Let op:** ik heb deze versie alleen getest op een Android TV-emulator en op een Philips 65OLED810 (Google TV). Op andere tv's of boxen kan het anders werken. Ik maak dit voor mezelf en geef geen support: kom je een bug tegen, fork de repository dan gerust en los het zelf op. Meld problemen met deze versie ook niet bij de oorspronkelijke maker van SmartTube.
+
 Hieronder volgt de originele README.
 
 ---
