@@ -97,6 +97,10 @@ public class SettingsGridFragment extends GridFragment implements SettingsSectio
     public void onResume() {
         super.onResume();
         showOrHideTitle();
+        // MOD (Inge): achtergrond volgens de gekozen stand (ook direct na het wijzigen van de instelling)
+        if (mBackgroundManager != null) {
+            mBackgroundManager.applyModeBackground();
+        }
     }
 
     private void applyPendingUpdates() {

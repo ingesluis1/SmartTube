@@ -159,6 +159,9 @@ public class ProfilePickerActivity extends MotherActivity implements ProfilePick
      * daarna wat donkerder en voller gemaakt zodat witte tekst leesbaar blijft.
      */
     private static int accentFrom(Bitmap bitmap) {
+        if (bitmap != null) {
+            return com.liskovsoft.smartyoutubetv2.tv.util.ColorExtract.dominant(bitmap, NEUTRAL_ACCENT);
+        }
         try {
             Bitmap small = Bitmap.createScaledBitmap(bitmap, 24, 24, true);
             double r = 0, g = 0, b = 0, total = 0;

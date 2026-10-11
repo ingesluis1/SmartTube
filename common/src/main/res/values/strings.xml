@@ -798,4 +798,11 @@
     <string name="accent_orange">Orange</string>
     <string name="accent_yellow">Yellow</string>
     <string name="accent_white">White</string>
+    <!-- MOD (Inge): achtergrondkleur -->
+    <string name="bg_tint">Background color</string>
+    <string name="bg_tint_desc">Gives the background a soft glow in a matching color. Changes as you move through the app.</string>
+    <string name="bg_tint_off">Off</string>
+    <string name="bg_tint_video">From the selected video</string>
+    <string name="bg_tint_profile">From your profile picture</string>
+    <string name="bg_tint_accent">From your accent color</string>
 </resources>

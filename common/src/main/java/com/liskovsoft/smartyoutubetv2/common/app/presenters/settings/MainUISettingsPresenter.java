@@ -50,6 +50,7 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
 
         appendTopButtonsCategory(settingsPresenter);
         appendColorScheme(settingsPresenter);
+        appendBackgroundTint(settingsPresenter); // MOD (Inge)
         if (Build.VERSION.SDK_INT > 19) {
             appendCardTextScrollSpeed(settingsPresenter);
         }
@@ -86,6 +87,27 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
         }
 
         settingsPresenter.appendCheckedCategory(getContext().getString(R.string.various_buttons), options);
+    }
+
+    // MOD (Inge): achtergrond kleurt mee met de video of de profielfoto
+    private void appendBackgroundTint(AppDialogPresenter settingsPresenter) {
+        List<OptionItem> options = new ArrayList<>();
+        int mode = com.liskovsoft.smartyoutubetv2.common.prefs.BackgroundTint.getMode(getContext());
+        int[] modes = {com.liskovsoft.smartyoutubetv2.common.prefs.BackgroundTint.MODE_OFF,
+                com.liskovsoft.smartyoutubetv2.common.prefs.BackgroundTint.MODE_VIDEO,
+                com.liskovsoft.smartyoutubetv2.common.prefs.BackgroundTint.MODE_PROFILE,
+                com.liskovsoft.smartyoutubetv2.common.prefs.BackgroundTint.MODE_ACCENT};
+        int[] names = {R.string.bg_tint_off, R.string.bg_tint_video, R.string.bg_tint_profile, R.string.bg_tint_accent};
+        for (int i = 0; i < modes.length; i++) {
+            final int value = modes[i];
+            options.add(UiOptionItem.from(getContext().getString(names[i]),
+                    option -> com.liskovsoft.smartyoutubetv2.common.prefs.BackgroundTint.setMode(getContext(), value),
+                    value == mode));
+        }
+        com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionCategory category =
+                com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionCategory.radioList(getContext().getString(R.string.bg_tint), options);
+        category.description = getContext().getString(R.string.bg_tint_desc);
+        settingsPresenter.appendCategory(category);
     }
 
     private void appendColorScheme(AppDialogPresenter settingsPresenter) {
