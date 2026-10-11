@@ -1167,6 +1167,34 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void openChannel() {
+        // MOD (Inge): eerst een kanaalpaneel zoals de YouTube-app: naam, abonnees, Subscribed/Subscribe, Go to channel
+        Video video = getVideo();
+        if (video == null) {
+            return;
+        }
+
+        AppDialogPresenter dialog = AppDialogPresenter.instance(getContext());
+        String author = video.getAuthor() != null ? video.getAuthor() : "";
+        String subscribers = video.subscriberCount != null ? video.subscriberCount : "";
+        CharSequence title = subscribers.isEmpty() ? author : author + "\n" + subscribers;
+        boolean subscribed = video.isSubscribed;
+
+        dialog.appendSingleButton(UiOptionItem.from(
+                getContext().getString(subscribed ? R.string.subscribed_to_channel : R.string.action_subscribe),
+                option -> {
+                    onSubscribe(subscribed ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
+                    dialog.closeDialog();
+                }));
+        dialog.appendSingleButton(UiOptionItem.from(
+                getContext().getString(R.string.go_to_channel),
+                option -> {
+                    dialog.closeDialog();
+                    openChannelPage();
+                }));
+        dialog.showDialog(title);
+    }
+
+    private void openChannelPage() {
         startTempBackgroundMode(ChannelPresenter.class);
         ChannelPresenter.instance(getContext()).openChannel(getVideo());
     }

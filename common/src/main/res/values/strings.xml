@@ -750,6 +750,7 @@
     <string name="comments_disabled">Comments are disabled for this video</string>
     <!-- MOD (Inge): kop van het reactiepaneel -->
     <string name="comments_title">Comments</string>
+    <string name="go_to_channel">Go to channel</string>
     <plurals name="hours">
         <item quantity="one">%s hour</item>
         <item quantity="other">%s hours</item>
