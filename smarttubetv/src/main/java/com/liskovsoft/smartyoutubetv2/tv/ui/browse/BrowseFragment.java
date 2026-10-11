@@ -153,7 +153,7 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
                 }
         );
 
-        setOnSearchClickedListener(view -> SearchPresenter.instance(getContext()).startSearch(null));
+        setOnSearchClickedListener(view -> SearchPresenter.instance(getContext()).startVoice()); // MOD (Inge): ronde knop = spraakzoeken, de balk = typen
     }
 
     // MOD (Inge): navigatiestrook links (iconen van de secties), zoals de YouTube-app

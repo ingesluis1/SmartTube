@@ -198,6 +198,7 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
         MainUIData mainUIData = MainUIData.instance(getContext());
 
         mSearchOrbView = findViewById(R.id.title_orb);
+        mSearchOrbView.setOrbIcon(ContextCompat.getDrawable(getContext(), R.drawable.lb_ic_search_mic_out)); // MOD (Inge): microfoon zoals YouTube
 
         // MOD (Inge): brede zoekbalk naast de zoekknop
         mSearchPill = findViewById(R.id.search_pill);
