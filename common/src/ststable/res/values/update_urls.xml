@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- MOD (Inge): eigen update-server i.p.v. die van de maker. Eerst publiek (via Cloudflare Tunnel), dan thuisnetwerk als reserve. -->
     <string-array name="update_urls">
-        <item>https://github.com/yuliskov/SmartTubeNext/releases/download/latest/smarttube_stable2.json</item>
+        <item>https://updates.stacklines.nl/smarttube/stable.json</item>
+        <item>http://192.168.1.177:8410/smarttube/stable.json</item>
+        <!--TEST-PC--><item>http://192.168.1.159:8000/smarttube/stable.json</item>
     </string-array>
 </resources>

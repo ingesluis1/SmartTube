@@ -138,10 +138,7 @@ public class SplashPresenter extends BasePresenter<SplashView> {
     }
 
     private void checkForUpdates() {
-        // MOD (Inge): eigen build, geen automatische update-check (anders overschrijft de updater deze versie)
-        if (true) {
-            return;
-        }
+        // MOD (Inge): update-check staat weer aan, maar kijkt nu naar de eigen update-server (zie update_urls.xml)
         BootDialogPresenter updatePresenter = BootDialogPresenter.instance(getContext());
         updatePresenter.start();
     }
