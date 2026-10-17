@@ -82,6 +82,7 @@ public class MainApplication extends MultiDexApplication { // fix: Didn't find c
         }
 
         setupGlobalExceptionHandler();
+        NtfyCrashReporter.sendPendingAsync(this); // MOD (Inge)
         setupViewManager();
     }
 
@@ -142,6 +143,8 @@ public class MainApplication extends MultiDexApplication { // fix: Didn't find c
 
             applyCrashFixes(e);
             //e = wrapWithAdditionalInfo(e);
+
+            NtfyCrashReporter.save(this, t, e); // MOD (Inge): crash bewaren, bij de volgende start naar ntfy
 
             defaultHandler.uncaughtException(t, e);
         });
