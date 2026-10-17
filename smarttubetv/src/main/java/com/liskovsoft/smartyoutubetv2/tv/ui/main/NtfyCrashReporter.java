@@ -20,12 +20,13 @@ import java.util.Locale;
 import java.util.UUID;
 
 /**
- * MOD (Inge): crashes van deze eigen build als pushbericht naar ntfy.sh (gratis, geen account).
+ * MOD (Inge): crashes van deze eigen build als pushbericht naar de eigen ntfy-server (ntfy.stacklines.nl);
+ * iedereen mag naar het kanaal sturen, alleen Inge kan het lezen.
  * Een crash wordt eerst als bestand bewaard (het proces gaat daarna dood) en bij de volgende start verstuurd.
  * Geen accountgegevens of ip-adressen: alleen versie, tv-model, Android-versie en de foutmelding.
  */
 public final class NtfyCrashReporter {
-    private static final String TOPIC = "smarttube-inge-gpl1j9gt8ojys57q";
+    private static final String URL_NTFY = "https://ntfy.stacklines.nl/smarttube";
 
     private NtfyCrashReporter() {
     }
@@ -107,7 +108,7 @@ public final class NtfyCrashReporter {
 
     private static boolean send(String title, byte[] body) {
         try {
-            HttpURLConnection c = (HttpURLConnection) new URL("https://ntfy.sh/" + TOPIC).openConnection();
+            HttpURLConnection c = (HttpURLConnection) new URL(URL_NTFY).openConnection();
             c.setRequestMethod("POST");
             c.setDoOutput(true);
             c.setConnectTimeout(8000);
